@@ -7,4 +7,4 @@ Nécessite
 * le package python Numpy
 * le package python Networkx
 
-Conseil: utiliser une disctribution python 3 Anaconda.
+Conseil: utiliser une distribution python 3 Anaconda.
