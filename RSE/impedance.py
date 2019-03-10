@@ -2,6 +2,9 @@ import numpy as np
 
 
 class Impedance:
+    """
+    Used in ex_2_3.
+    """
     def __init__(self, R, X):
         """
         Impedance constructor.
@@ -80,24 +83,3 @@ class Impedance:
         Print impedance in latex format, polar style.
         """
         print("$ %.2f \\angle %.2f $" % (self.mag, np.rad2deg(self.ang)))
-
-
-if __name__ == "__main__":
-
-    # Exercise 2.3
-    omega = 1000  # rad /s
-    Z_R = Impedance(5e3, 0)
-    Z_C = Impedance(0, -1 / (omega * 49.8e-6))
-    Z_L = Impedance(0, omega * 20e-3)
-
-    Z = Z_R + Z_C.parallel(Z_L)
-
-    Z.tex_cart()
-    Z.tex_polar()
-
-    Z_1 = Impedance(2e3, omega * 10e-3)
-
-    Z_eq = Z_1 + Z
-
-    Z_eq.tex_cart()
-    Z_eq.tex_polar()

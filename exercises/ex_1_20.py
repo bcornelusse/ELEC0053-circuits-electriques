@@ -34,8 +34,13 @@ def ex_1_20_test():
     print("\n".join("\t %s: %.4f" % (k, v) for (k, v) in solution.items()))
     print("")
 
-    assert (solution["a"] - (-0.112004) < _EPS)
+
+    assert (solution["a"] - (0.394812) < _EPS)
     assert (solution["b"] - (0.306512) < _EPS)
-    assert (solution["c"] - (0.394812) < _EPS)
-    assert (solution["d"] - (0.322441) < _EPS)
+    assert (solution["c"] - (0.322441) < _EPS)
+    assert (solution["d"] - (-0.112004) < _EPS)
     assert (solution["e"] - (0.000000) < _EPS)
+
+
+if __name__ == "__main__":
+    ex_1_20_test()
