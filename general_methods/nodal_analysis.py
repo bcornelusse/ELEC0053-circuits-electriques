@@ -3,7 +3,6 @@ import numpy as np
 
 from branch_device import Resistor, IndependentCurrentSource
 
-
 class NodalAnalysis:
 
     def __init__(self, graph):
@@ -56,7 +55,9 @@ class NodalAnalysis:
         v_SN = np.linalg.solve(G_N, i_sN)
 
         nodes = set(passified_graph.nodes()).difference(reference_node)
-        return dict(zip(nodes, v_SN))
+        solution = dict(zip(nodes, v_SN))
+        solution[reference_node] = 0.0
+        return solution
 
     def print_graph(self):
         print("Graph: ")
@@ -90,5 +91,5 @@ if __name__ == "__main__":
     # Solve and print the solution
     solution = N.solve(reference_node="e")
     print("Node potentials:")
-    print("\n".join("\t %s: %.4f" % (k, v) for (k, v) in solution.items()))
+    print("\n".join("\t %s: %f" % (k, v) for (k, v) in solution.items()))
     print("")
