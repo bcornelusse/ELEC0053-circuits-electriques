@@ -1,20 +1,24 @@
 import networkx as nx
 import numpy as np
+import matplotlib.pyplot as plt
 
 from .branch_device import Resistor, IndependentCurrentSource
 
 
 class NodalAnalysis:
     """
-    Used in ex_1_20
+    Used in ex_8_1
     """
 
-    def __init__(self, graph):
+    def __init__(self, graph, draw=False):
         """
         Constructor
         :param graph: Graph of the network to analyze
         """
         self.graph = graph
+        if draw:
+            nx.draw_planar(self.graph)
+            plt.show()
 
     def solve(self, reference_node):
         """
@@ -59,7 +63,7 @@ class NodalAnalysis:
         v_SN = np.linalg.solve(G_N, i_sN)
 
         nodes = set(passified_graph.nodes()).difference(reference_node)
-        solution = dict(zip(nodes, v_SN))
+        solution = dict(zip(sorted(nodes), v_SN))
         solution[reference_node] = 0.0
         return solution
 

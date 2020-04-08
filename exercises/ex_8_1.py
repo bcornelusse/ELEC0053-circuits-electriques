@@ -1,13 +1,12 @@
 import networkx as nx
-from numpy.testing import assert_allclose
 
 from general_methods.branch_device import Resistor, IndependentCurrentSource
 from general_methods.nodal_analysis import NodalAnalysis
 
-_EPS = 1e-4
+_EPS = 1e-3 # Tolerance for comparisons
 
 
-def ex_1_20_test():
+def ex_8_1_test():
     graph = nx.MultiDiGraph()  # Create and empty graph object. This is a directed graph with multi-edges.
     # Caution: sense matters!
     graph.add_edge("e", "a", device=Resistor("R1", 1.0 / 2.0))  # Add a resistor between nodes "e" and "a"
@@ -31,16 +30,15 @@ def ex_1_20_test():
     # Solve and print the solution
     solution = N.solve(reference_node="e")
     print("Node potentials:")
-    print("\n".join("\t %s: %.4f" % (k, v) for (k, v) in solution.items()))
+    print("\n".join("\t %s: %.4f" % (k, v) for (k, v) in sorted(solution.items())))
     print("")
 
-
-    assert (solution["a"] - (0.394812) < _EPS)
-    assert (solution["b"] - (0.306512) < _EPS)
-    assert (solution["c"] - (0.322441) < _EPS)
-    assert (solution["d"] - (-0.112004) < _EPS)
-    assert (solution["e"] - (0.000000) < _EPS)
+    assert (abs(solution["a"] - (-0.112)) < _EPS)
+    assert (abs(solution["b"] - (0.306)) < _EPS)
+    assert (abs(solution["c"] - (0.395)) < _EPS)
+    assert (abs(solution["d"] - (0.322)) < _EPS)
+    assert (abs(solution["e"] - (0.000)) < _EPS)
 
 
 if __name__ == "__main__":
-    ex_1_20_test()
+    ex_8_1_test()
