@@ -1,5 +1,6 @@
 # Exercise 2.3
-from RSE.impedance import Impedance
+from matplotlib import pyplot as plt
+from ..RSE.impedance import Impedance
 
 omega = 1000  # rad /s
 Z_R = Impedance(5e3, 0)
@@ -27,13 +28,12 @@ I = I_1 + I_R2
 
 # Compute voltages.
 U_R2 = E
-U_R1 = Impedance(2e3,0).Z * I_1
-U_L1 = Impedance(0,omega*10e-3).Z * I_1
+U_R1 = Impedance(2e3, 0).Z * I_1
+U_L1 = Impedance(0, omega*10e-3).Z * I_1
 U_Z1 = Z_1.Z * I_1
 U_Z = Z.Z * I_1
 
 # Plot voltages.
-from matplotlib import pyplot as plt
 f, (ax1, ax2) = plt.subplots(1, 2)
 for U in [E, U_Z1, U_Z]:
     ax1.plot([0, U.real], [0, U.imag], marker='o')
