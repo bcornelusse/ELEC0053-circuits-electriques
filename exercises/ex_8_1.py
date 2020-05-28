@@ -3,15 +3,18 @@ import networkx as nx
 from general_methods.branch_device import Resistor, IndependentCurrentSource
 from general_methods.nodal_analysis import NodalAnalysis
 
-_EPS = 1e-3 # Tolerance for comparisons
+_EPS = 1e-3  # Tolerance for comparisons
 
 
 def ex_8_1_test():
-    graph = nx.MultiDiGraph()  # Create and empty graph object. This is a directed graph with multi-edges.
+    # Create and empty graph object. This is a directed graph with multi-edges.
+    graph = nx.MultiDiGraph()
     # Caution: sense matters!
-    graph.add_edge("e", "a", device=Resistor("R1", 1.0 / 2.0))  # Add a resistor between nodes "e" and "a"
+    # Add a resistor between nodes "e" and "a"
+    graph.add_edge("e", "a", device=Resistor("R1", 1.0 / 2.0))
     graph.add_edge("e", "b", device=Resistor("R2", 1.0 / 5.0))
-    graph.add_edge("e", "b", device=IndependentCurrentSource("I1", 2.5))  # Add an ICS between nodes "e" and "b"
+    graph.add_edge("e", "b", device=IndependentCurrentSource(
+        "I1", 2.5))  # Add an ICS between nodes "e" and "b"
     graph.add_edge("e", "c", device=Resistor("R3", 1.0 / 4.0))
     graph.add_edge("e", "c", device=IndependentCurrentSource("I2", 1.0))
     graph.add_edge("e", "d", device=IndependentCurrentSource("I3", 1.0))
@@ -30,7 +33,8 @@ def ex_8_1_test():
     # Solve and print the solution
     solution = N.solve(reference_node="e")
     print("Node potentials:")
-    print("\n".join("\t %s: %.4f" % (k, v) for (k, v) in sorted(solution.items())))
+    print("\n".join("\t %s: %.4f" % (k, v)
+                    for (k, v) in sorted(solution.items())))
     print("")
 
     assert (abs(solution["a"] - (-0.112)) < _EPS)

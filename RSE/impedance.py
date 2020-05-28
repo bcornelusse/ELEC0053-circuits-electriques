@@ -1,10 +1,12 @@
 import numpy as np
+import math
 
 
 class Impedance:
     """
     Used in ex_2_3.
     """
+
     def __init__(self, R, X):
         """
         Impedance constructor.
@@ -83,3 +85,6 @@ class Impedance:
         Print impedance in latex format, polar style.
         """
         print("$ %.2f \\angle %.2f $" % (self.mag, np.rad2deg(self.ang)))
+
+    def __str__(self):
+        return '%.2f < %.2f deg' % (self.mag, self.ang*180/math.pi)
