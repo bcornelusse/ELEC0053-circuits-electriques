@@ -1,0 +1,155 @@
+%%\documentclass[9pt,trans]{beamer}
+\documentclass[9pt,aspectratio=169]{beamer}
+\usepackage{epsfig}
+\usepackage{eurosym}
+\usepackage[latin1]{inputenc}
+
+\hypersetup{pdfstartview = FitH}
+\hypersetup{pdfpagelayout = SinglePage}
+
+\bibliographystyle{plainnat}
+
+\usefonttheme[onlymath]{serif}
+
+% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetheme{default}
+\definecolor{myRed}{RGB}{209,34,57} 
+\setbeamercolor{title}{fg=myRed}
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{enumerate item}{fg=black}
+\setbeamercolor{enumerate subitem}{fg=black}
+\setbeamercolor{itemize subitem}{fg=black}
+\setbeamercolor{itemize subsubitem}{fg=black}
+\setbeamercolor{block title}{fg=myRed}
+\setbeamercolor{block body}{bg=black!5}
+\setbeamercolor{section in toc}{fg=black}
+
+\definecolor{myAlert}{RGB}{231,119,47} 
+\setbeamercolor*{alerted text}{fg=myRed}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}{\textcolor[rgb]{0.6,0.6,0.6} {~~ ELEC0053 Circuits électriques -- 2021 \hfill \insertframenumber/\inserttotalframenumber ~ ~}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Outline %%%%%%%%%%%%%%
+\AtBeginSection[]{{ 
+    \begin{frame}
+      \frametitle{Outline}
+      \tableofcontents[currentsection]
+    \end{frame}
+}}
+
+\AtBeginSubsection[]{{ 
+		\begin{frame}
+			\frametitle{Outline}
+			\tableofcontents[currentsection, currentsubsection]
+		\end{frame}
+	}}
+
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%\beamerdefaultoverlayspecification{<+->}
+
+\beamertemplatenavigationsymbolsempty
+\graphicspath{{figs/}}
+
+%%%%%%
+\definecolor{rot}{rgb}{1,0,0}
+\definecolor{gruen}{rgb}{0,1,0}
+\definecolor{blau}{rgb}{0,0,1}
+
+%%% number sets
+\newcommand{\Z}       {\mathbb{Z} }
+\newcommand{\R}       {\mathbb{R} }
+\newcommand{\Q}       {\mathbb{Q} }
+\newcommand{\N}       {\mathbb{N} }
+\newcommand{\spa}     {\text{span}}
+\newcommand{\lin}     {\text{span}}
+\newcommand{\inter}   {\text{int} }
+
+%%% mathematical stuff
+\newcommand{\sosR}    {\sum^2}
+\newcommand*{\transpose}[1]  { {#1}^T }
+\newcommand*{\rounddown}[1]  {\left\floor #1 \right\rfloor}
+\newcommand*{\roundup}[1]    {\left\lceil  #1 \right\rceil}
+\newcommand*{\ipart}[1]      {\rounddown{#1}}
+\newcommand*{\fpart}[1]      {\mathfrak{f}\left(#1\right)}
+
+
+\newcommand*{\iepoly}[2]  {z_{#1}\left(#2\right)}
+\newcommand*{\redmon}[3]  {r_{#1}^{#2}\left( #3 \right)}
+\newcommand*{\redset}[1]  {#1^{\emph{red}}}
+
+\newcommand*{\Gpoly}[1] {P_{[#1]}}
+
+\newcommand*{\nonc}[1]{\overline{#1}}
+\newcommand*{\const}[1]{#1_0}
+
+\newcommand{\define}{\stackrel{\rm def.}{\Leftrightarrow}}
+\newcommand{\qform}[3]{\frac{1}{2} x^{\top}#1x + #2^{\top}x + #3}
+\def\xzero{x^{0}}
+\newcommand{\gxh}[2]{{g_{#1}(#2)}}
+
+\def\pcone_k{{\mathcal C}_{k}(f)}
+\def\orthant_j{{\mathcal O}_{j}}
+
+\def\BDB{BDB^{\top}}
+\def\LDL{LDL^{\top}}
+\def\bA{A}
+\def\bb{b}
+\def\bc{c}
+\def\bh{h}
+\def\bp{p}
+\def\bx{x}
+\def\by{y}
+\def\bu{u}
+\def\bv{v}
+\def\bd{d}
+\def\T{^{T}}
+\def\D{}
+\def\mb{{\bf}}
+\def\sep{}
+\def\bo{0}
+\def\bw{w}
+\def\ba{a}
+\def\bg{g}
+\def\bH{H}
+\def\be{e}
+
+\let\ve=\relax
+\newcommand\vealpha{{\alpha}}
+\newcommand{\st}{\mathrm{s.t.}}
+\DeclareMathOperator\conv{conv}
+\DeclareMathOperator\cone{cone}
+\newcommand{\B}{\{0,1\}}
+
+\newcommand*{\person}[1] {\textsc{#1}}
+
+\newtheorem{algorithm}{Algorithmus}
+
+\makeatletter
+\newenvironment{rmat}{\left(\null\,\vcenter\bgroup
+  \Let@\restore@math@cr\default@tag
+  \baselineskip6\ex@ \lineskip1.5\ex@ \lineskiplimit\lineskip
+  \ialign\bgroup\hfil$\m@th\scriptstyle##$&&\thickspace
+  \hfil$\m@th\scriptstyle##$\crcr
+}{%
+  \crcr\egroup\egroup\,\right)%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{orange}{rgb}{0.8,0.3,0.0}
+\definecolor{darkgreen}{rgb}{0.0,0.5,0.0}
+\definecolor{gold}{rgb}{1.0,0.8,0.0}
+\definecolor{brown}{rgb}{0.6,0.2,0.2}
+\definecolor{blue4}{rgb}{0,0,144}
+\definecolor{white}{rgb}{255,255,255}
+\definecolor{blueexample}{rgb}{0.2,0.2,0.7}
+
+\author []{}
+\institute[ULg]{Universit\'e de Li\`ege}
+

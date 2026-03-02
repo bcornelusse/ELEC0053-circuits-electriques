@@ -1,6 +1,6 @@
 # Exercise 2.3
 from matplotlib import pyplot as plt
-from ..RSE.impedance import Impedance
+from RSE.impedance import Impedance
 
 omega = 1000  # rad /s
 Z_R = Impedance(5e3, 0)

@@ -102,3 +102,13 @@ ENV/
 ELECenv/
 .idea/
 .vscode/settings.json
+
+*.fls
+*.aux
+*.fdb_latexmk
+*.out
+*.snm
+*.nav
+*.synctex.gz
+*.bbl
+*.toc

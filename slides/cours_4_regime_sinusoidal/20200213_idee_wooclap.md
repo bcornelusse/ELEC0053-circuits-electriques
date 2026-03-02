@@ -1,0 +1,6 @@
+ - signal sinusoidal : période - fréquence - pulsation
+ - formule d'Euler
+ - valeur efficace
+ - Calcul en nombres complexes
+ - phaseurs
+  - propriétés

@@ -1,0 +1,857 @@
+% !TeX encoding = ISO-8859-1
+% !TeX root = cours_3_ELEC0053-2020.tex
+% !TeX spellcheck = fr_FR
+\input{OD_config.tex}
+
+
+%\usepackage[orientation=landscape,size=custom,width=16,height=9,scale=0.5, debug]{beamerposter} 
+
+\usepackage{tikz}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{8}  % for normal
+ 
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{lg}{rgb}{0.6,0.6,0.6}
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+		language=Python,
+		basicstyle=\ttm,
+		otherkeywords={self},             % Add keywords here
+		keywordstyle=\ttb\color{deepblue},
+		emph={MyClass,__init__},          % Custom highlighting
+		commentstyle=\color{lg},
+		emphstyle=\ttb\color{deepred},    % Custom highlighting style
+		stringstyle=\color{deepgreen},
+		frame=tb,                         % Any extra options here
+		showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+	\pythonstyle
+	\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+		\pythonstyle
+		\lstinputlisting[#1]{#2}}}
+
+
+
+
+\title{\textbf{} ELEC0053 Circuits électriques \\[2mm] --- \\[2mm] Régime transitoire, circuits RC, RL, RLC}
+\author{Bertrand Corn\'elusse}
+
+\usepackage{tikz}
+\usepackage[americanresistors,americaninductors,siunitx]{circuitikz}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{pgfplots}
+\input{phasor.tex}
+
+\newcommand{\mymotor}[2] % #1 = name , #2 = rotation angle
+{\draw[thick,rotate=#2] (#1) circle (10pt)
+	node[]{$\mathsf M$} 
+	++(-12pt,3pt)--++(0,-6pt) --++(2.5pt,0) ++(-2.8pt,6pt)-- ++(2.5pt,0pt);
+	\draw[thick,rotate=#2] (#1) ++(12pt,3pt)--++(0,-6pt) --++(-2.5pt,0) ++(2.8pt,6pt)-- ++(-2.5pt,0pt);
+}
+
+\newcommand{\mymotorB}[1] % #1 = name 
+{\draw[thick] (#1) circle (12pt)
+	node[above=-3pt]{$\mathsf M$} ++(-8pt,-3pt)--++(15pt,0);
+	\draw[thick,dashed] (#1) ++(-8pt,-5pt)--++(15pt,0);
+}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame} {Leçons précédentes}
+	\begin{itemize}
+	\item Circuits linéaires, résistances, sources (commandées ou non) de courant et de tension.
+	\item Lois de Kirchhoff
+	\item Régimes transitoires du premier ordre
+	\end{itemize}
+	\vfill
+	Notions mathématiques utilisées : 
+	\begin{itemize}
+		\item Résolution d'équations différentielles du premier degré
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Qu'allons nous faire dans ce cours ? }
+
+	\begin{itemize}
+	\item Nous étudions des circuits du second ordre composés de bobine(s), condensateur(s) et résistances. 	
+	\item Nous apprenons à poser les équations et à les résoudre.
+	\end{itemize}
+	 \vfill
+	Notions mathématiques utilisées : 
+	\begin{itemize}
+	\item les équations différentielles du second ordre à coefficients constants.
+	\end{itemize}
+	
+    \vfill
+	\textbf{Dans le syllabus : le reste du chapitres 3.}
+
+\end{frame}
+
+\begin{frame}{Exercices que vous devez être capables de résoudre à l'issue de ce cours }
+	
+	Tous les exercices du chapitre 3
+	
+\end{frame}
+
+\begin{frame}{Plan du cours}
+	\tableofcontents
+\end{frame}
+
+\section{Rappel : comment résoudre un exercice en pratique}
+\begin{frame}
+	
+	\begin{block} {Méthode de résolution}
+		\begin{itemize}
+			\item En fonction de la position d'un ou plusieurs \textbf{interrupteur}(s), de {\bf variations définies des sources} alimentant le circuit, identifier les différentes \textbf{périodes} et les circuits associés.
+			\item Pour chaque période,
+			\begin{enumerate}
+				\item déterminer les \textbf{conditions initiales}
+				\item obtenir l'\textbf{équation différentielle} de la tension (condensateur) ou du courant (inductance) en utilisant les PLK, SLK et les relations $u-i$ aux bornes des éléments
+				\item résoudre cette équation différentielle
+			\end{enumerate}
+		\end{itemize}
+	\end{block}	
+	\vfill
+	
+	\textbf{{Conseils}}
+	
+	\begin{itemize}
+		\item Utiliser des expressions littérales le plus loin possible, remplacer les valeurs numériques à la fin
+		\item Vérifier la continuité temporelle
+		\item Pour un condensateur : recherche de la tension et puis du courant par dérivation
+		\item Pour une inductance : recherche du courant et puis de la tension par dérivation
+		\item Vérifier les valeurs en fin et début de période par un raisonnement physique
+	\end{itemize}
+	\vfill	
+	
+\end{frame}
+
+\section{Circuits du deuxième ordre -- RLC série}
+
+\subsection{Réponse libre}
+\begin{frame}{ Réponse libre}
+
+	Soit le circuit suivant :
+	\begin{columns}
+	\begin{column}{0.5\linewidth}
+		\centering
+		\includegraphics[width=0.7\linewidth]{figs/RLC}
+	\end{column}
+	\begin{column}{0.45\linewidth}
+	Condition initiales : 	
+	\begin{enumerate}
+		\item Condensateur $C$  chargé : $u_{C0}$\\
+		\item Inductance relaxée : $i_0 = 0$
+	\end{enumerate}	
+	\end{column}
+	\end{columns}
+	\vfill
+	Par la SLK, on a à tout instant
+	\[L\frac{di}{dt}+R\, i-u_{C0}+\frac{1}{C}\int_0^t i\, dx = 0\]
+	En dérivant :
+	$$L\frac{d^2i}{dt^2}+R\frac{di}{dt}+\frac{1}{C} i = 0$$
+	Et en divisant par $L$, on obtient 
+	\begin{block} {Dynamique du circuit RLC série}
+		$$\frac{d^2i}{dt^2}+\frac{R}{L}\frac{di}{dt}+\frac{1}{LC} i = 0$$
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Solution}
+	\begin{block} {Solution générale de la forme}
+		\[K_1e^{s_1 t}+K_2e^{s_2 t}\]
+		où $s_1$ et $s_2$ sont les racines de l'équation caractéristique
+		\[s^2 + \frac{R}{L} s + \frac{1}{LC} = 0\]
+	\end{block}
+\vfill
+\begin{columns}
+	\begin{column}{0.3\linewidth}
+		Si on pose 	
+		\begin{align*}
+		\alpha & =  \frac{R}{2L}\\
+		\omega_0 & =  \frac{1}{\sqrt{LC}}
+		\end{align*}
+		\end{column}
+	\begin{column}{0.65\linewidth}
+		alors
+		\begin{align*}
+		s_1 &= -\alpha + \sqrt{\alpha^2 - \omega_0^2}\\
+		s_2 & =  -\alpha - \sqrt{\alpha^2 - \omega_0^2}\	
+		\end{align*}
+		$s_1$ et $s_2$ sont les fréquences naturelles du circuit.
+	\end{column}
+\end{columns}
+\vfill	
+	\begin{block}{3 formes de solution}
+	Selon que $\alpha^2 - \omega_0^2 > 0,  \, \alpha^2 - \omega_0^2 < 0, \,\text{ ou } \alpha^2 - \omega_0^2= 0$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Nomenclature et intuition}
+	Toutes les grandeurs $\alpha$, $\omega_0$, $s_1$ et $s_2$ sont des fréquences, mesurées en $Hz$.
+	\begin{itemize}
+		\item $\omega_0$ est la fréquence de résonance
+		\item $\alpha$ est le coefficient d'amortissement 
+		\item $s_1$ et $s_2$ sont les fréquences naturelles du circuits.
+	\end{itemize}
+
+	\vfill
+
+	Intuition: 
+	\begin{itemize}
+	\item $\alpha > \omega_0 \Rightarrow $ sur-amortissement  
+	\item $\alpha = \omega_0 \Rightarrow $ on est à la limite, amortissement "critique"
+	\item $\alpha < \omega_0 \Rightarrow $ sous-amortissement  $\Rightarrow$ oscillations.
+	\end{itemize}
+	
+	\vfill
+	\textbf{Note:} on utilise parfois l'unité \textit{néper} ($Np$) (provient du mathématicien \textsc{John Napier})\\ pour $\alpha$, $s_1$ et $s_2$. Un néper est sans dimension. Donc, ce sont des $Np/s$ ...
+\end{frame}
+
+\begin{frame}{Régime apériodique : $\alpha^2 - \omega_0^2 > 0 $}	
+	$s_1$ et $s_2$ sont deux nombres réels {\em strictement négatifs} :
+	{\small \[s_{1,2}=-\alpha \pm \sqrt{\alpha^2-\omega_0^2}= -\alpha \pm \alpha_1 < 0\]}
+	Forme générale de la solution :
+	{\small \[i(t)=K_1 e^{-\alpha t}e^{\alpha_1 t} + K_2 e^{-\alpha t}e^{-\alpha_1 t}\]}
+	Les constantes $K_1$ et $K_2$ sont fixées par les conditions initiales:
+	\begin{itemize}
+		\item {\small $i(0-)=0\, \rightarrow \, i(0+)=0$ ($i$ continu dans $L$)
+			\[K_1+K_2=0, \quad K_2=-K_1\]}
+		\item {\small $u_R(0+)=0 \quad \text{puisque~} i(0+)=0 \rightarrow u_L(0+)=u_C(0+)=u_{C0}$
+			\[u_L(0+)=\left.L\frac{di}{dt}\right|_{t=0}=\left.L(K_1s_1e^{s_1t}-K_1s_2e^{s_2t})\right|_{t=0}
+			=2\alpha_1K_1L=u_{C0}\]}
+	\end{itemize}
+	\begin{center}
+		\fbox{
+			$i(t)=\frac{u_{C0}}{\alpha_1 L}\, e^{-\alpha t}\sinh (\alpha_1 t)\quad
+			t\geq 0$}
+	\end{center}
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti : $\alpha^2 - \omega_0^2 < 0 $}
+
+	$s_1$ et $s_2$ sont deux nombres complexes conjugués {\em à partie réelle négative}  :
+	{\small \[s_{1,2}=-\alpha \pm j\sqrt{\omega_0^2-\alpha^2}= -\alpha \pm j\omega_d \]}
+	Forme générale de la solution :
+	{\small \[i(t)=K_1 e^{-\alpha t}e^{j\omega_d t} + K_2 e^{-\alpha t}e^{-j\omega_d t}
+		= e^{-\alpha t}(K_1^{'}\cos \omega_d t + K_2^{'}\sin \omega_d t) \]}
+	\[i(0+)=0 \, \rightarrow K_1^{'}=0 \qquad u_L(0+)=u_{C0}\, \rightarrow K_2^{'}=\frac{u_{C0}}{L\omega_d}\]
+	\begin{center}
+		\fbox{
+			$i(t)=\frac{u_{C0}}{\omega_d L}\, e^{-\alpha t}\sin (\omega_d t) \quad
+			t\geq 0$}
+	\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique critique : $\alpha^2 - \omega_0^2 = 0 $}	
+	L'équation caractéristique possède une seule racine de multiplicité 2 :
+	{\small \[s_{1}=s_2=-\alpha < 0\]}
+	Forme générale de la solution (\textbf{attention}):
+	{\small \[i(t)=K_1 \alert{t} e^{-\alpha t}+K_2e^{-\alpha t}\]}
+	\[i(0+)=0 \, \rightarrow K_2=0 \qquad u_L(0+)=u_{C0}\, \rightarrow K_1=\frac{u_{C0}}{L}\]
+	\begin{center}
+		\fbox{
+			$i(t)=\frac{u_{C0}}{L}\, t\, e^{-\alpha t} \quad t\geq  0$}
+	\end{center}
+\end{frame}
+
+
+\subsection{Exemple}
+
+
+\begin{frame}{Régime oscillatoire amorti}
+	
+	\begin{center}
+		\includegraphics[width=0.4\linewidth]{figs/RLC}
+	\end{center}
+	
+	Circuit RLC série avec 
+	\[\left.\begin{array}{rl}
+	L=100 & \text{mH}\\
+	C=0.1 & \mu\text{F}\\
+	R=560 & \Omega\\
+	\end{array}\right\}\rightarrow \omega_0^2=\frac{1}{LC}=10^8 \quad \alpha=\frac{R}{2L}=2800
+	\]
+	\[\alpha^2 < \omega_0^2 \rightarrow \quad \text{Régime oscillatoire amorti}\]
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+	Fréquence d'oscillation : $\omega_d=\sqrt{\omega_0^2-\alpha^2}=9600$ rad/s
+	
+	Amortissement : $\alpha=2800$ Np/s
+	
+	Charge initiale du condensateur : $u_{C0}=$ 100 V
+	
+	
+	\underline{Remarque}
+	
+	\[\text{Si} \quad R\rightarrow 0 \text{, alors}\quad 
+	\left\{
+	\begin{array}{l}
+	\alpha \rightarrow 0\\
+	\omega_d \rightarrow \omega_0
+	\end{array}\right.\]
+	
+	Circuit LC : régime oscillatoire non amorti, $\omega_0$ est la
+	fréquence de résonance du circuit. (cfr chapitre régime sinusoïdal)
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+\[i(t)=\frac{u_{C0}}{L\omega_d}e^{-\alpha t}\sin\omega_d t = 0.1042e^{-2800 t}
+		\sin 9600 t\quad t\geq 0\]
+	
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/regime_oscillatoire_amorti}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+	Calcul des tensions aux bornes des différents éléments :
+	\begin{align*}
+	u_R(t) &=Ri(t)\\
+	u_L(t)& = L\frac{di}{dt}\\
+	& = -\frac{\alpha u_{C0}}{\omega_d}e^{-\alpha t}\sin \omega_d t
+	+ u_{C0}e^{-\alpha t} \cos \omega_d t\\
+	& = -29.17e^{-2800 t}\sin 9600 t + 100e^{-2800 t}\cos 9600 t \quad t > 0
+	\end{align*}
+	On vérifie que $u_L(0+)=u_{C0}=100$
+	\begin{align*}
+	u_C(t)&=u_R(t)+u_L(t)\\
+	& = \frac{\alpha u_{C0}}{\omega_d}e^{-\alpha t}\sin \omega_d t
+	+ u_{C0}e^{-\alpha t} \cos \omega_d t\\
+	& = 29.17e^{-2800 t}\sin 9600 t + 100e^{-2800 t}\cos 9600 t \quad t \geq 0
+	\end{align*}
+	On vérifie que $u_C(0+)=u_{C0}=100$
+\end{frame}
+
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+\begin{gather*}
+		u_L(t)=-29.17e^{-2800 t}\sin 9600 t + 100e^{-2800 t}\cos 9600 t \quad t \geq 0 \quad \text{(rouge)}\\
+		u_C(t)=29.17e^{-2800 t}\sin 9600 t + 100e^{-2800 t}\cos 9600 t \quad t \geq 0 \quad \text{(bleu)}
+		\end{gather*}
+	
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/regime_oscillatoire_amorti_u}
+\end{center}
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+	Calcul des puissances consommées par les différents éléments :
+	\begin{align*}
+	p_R(t) &=Ri^2(t)=6.08e^{-5600 t}\sin^2 9600 t \quad > 0 \text{~~!}\\
+	p_L(t) &=u_L(t)i(t) \\ &= -3.04e^{-5600 t}\sin^2 9600 t + 10.41 e^{-5600 t}\cos 9600 t \sin  9600 t\\
+	p_C(t)&= -u_C(t)i(t) \\ & = -3.04e^{-5600 t}\sin^2 9600 t - 10.41 e^{-5600 t}\cos 9600 t \sin  9600 t
+	\end{align*}
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime oscillatoire amorti}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{figs/echange_energie_L_et_C}
+\end{center}
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique}
+		
+	Circuit RLC série avec 
+	\[\left.\begin{array}{rl}
+	L=100 & \text{mH}\\
+	C=0.1 & \mu\text{F}\\
+	R=5600 & \Omega\\
+	\end{array}\right\}
+	\rightarrow \omega_0^2=\frac{1}{LC}=10^8 \quad \alpha=\frac{R}{2L}=28000
+	\]
+	\[\alpha^2 > \omega_0^2 \rightarrow \quad \text{régime apériodique}\]
+	
+	Deux fréquences naturelles réelles négatives :
+	\begin{align*}
+	s_1 &=-\alpha + \sqrt{\alpha^2-\omega^2}=-1846.6\\
+	s_2 &=-\alpha - \sqrt{\alpha^2-\omega^2}=-54153.3
+	\end{align*}
+	
+	
+	Charge initiale du condensateur : $u_{C0}=$ 100 V
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique : $i$}
+	{\small 
+		\begin{align*}
+		i(t)&=\frac{u_{C0}}{2L\sqrt{\alpha^2-\omega_0^2}}e^{s_1 t}- 
+		\frac{u_{C0}}{2L\sqrt{\alpha^2-\omega_0^2}}e^{s_2 t}\\
+		& = 0.01912e^{-1846.6 t} - 0.01912e^{-54153.3 t}
+		\end{align*}}
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/regime_aperiodique}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique : $u$}
+	Calcul des tensions aux bornes des différents éléments :
+	\begin{align*}
+	u_R(t) &=Ri(t)\\
+	u_L(t)& = L\frac{di}{dt}\\
+	& =-3.53e^{-1846.6 t} +103.53e^{-54153.3 t} \quad t > 0
+	\end{align*}
+	On vérifie que $u_L(0+)=u_{C0}=100$
+	\begin{align*}
+	u_C(t)&=u_R(t)+u_L(t)\\
+	& =103.53e^{-1846.6 t} -3.53e^{-54153.3 t}  \quad t \geq 0
+	\end{align*}
+	On vérifie que $u_C(0+)=u_{C0}=100$
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique : $u$}
+	{\small \begin{gather*}
+		u_L(t)=-3.53e^{-1846.6 t} +103.53e^{-54153.3 t} \quad t>0 \quad \text{(rouge)}\\
+		u_C(t)= 103.53e^{-1846.6 t} -3.53e^{-54153.3 t} \quad t \geq 0 \quad \text{(bleu)}
+		\end{gather*}}
+	
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/regime_aperiodique_u}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique : $p$}
+	Calcul des puissances consommées par les différents éléments :
+	\begin{align*}
+	p_R(t) &=Ri^2(t) \quad > 0 \text{~~!}\\
+	p_L(t) &=u_L(t)i(t) \\ &= -0.067e^{-3693.2 t}-1.98e^{-1.083\, 10^5 t}  +
+	2.05e^{-56000 t} \\
+	p_C(t)&= -u_C(t)i(t) \\ & =
+	-1.97e^{-3693.2 t}-0.067e^{-1.083\, 10^5 t}  +
+	2.05e^{-56000 t} 
+	\end{align*}
+	
+\end{frame}
+
+
+
+\begin{frame}{Puissances en régime apériodique}
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/regime_aperiodique_p}
+\end{center}
+	
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique critique}	
+	On obtient une racine double à l'équation caractéristique si :
+	\[\frac{1}{\sqrt{LC}}=\frac{R}{2L}\]
+	
+	Soit pour une même valeur de $L$ et $C$, il faut :
+	
+	\[R=2000\,\, \Omega\]
+	
+	\begin{align*}
+	i(t) & =1000te^{-10000t}\\
+	u_R(t)& =2\, 10^6te^{-10000t}\\
+	u_L(t) & = 100e^{-10000t}-10^6te^{-10000t}\\
+	u_C(t) & = 100e^{-10000t}+10^6te^{-10000t}
+	\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Régime apériodique critique: $i$}
+	{\small \[i(t)  =1000te^{-10000t}\]}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{figs/regime_aperiodique_critique}
+\end{center}
+\end{frame}
+
+
+\subsection{Résolution numérique}
+
+\begin{frame}{Résolution numérique}
+	Reprenons l'équation différentielle qui régit l'exemple précédent :
+	$$\frac{d^2i}{dt^2}+\frac{R}{L}\frac{di}{dt}+\frac{1}{LC} i = 0$$
+	avec $u_{C0}=$ 100 V.
+	
+	\vfill
+	
+	\begin{block}{Question :}
+	Comment résoudre cette équation "numériquement" ?
+	\end{block}
+
+	\vfill
+
+	Utilisons une méthode de résolution numérique (d'intégration) d'équation différentielle ordinaire en Python.
+\end{frame}
+
+
+\begin{frame}{Résolution numérique - reformulation}
+	
+Les méthodes de résolution numérique nécessitent généralement de reformuler les équations de degré supérieur à 1 en un système d'équations du premier degré du type
+$$\frac{d\mathbf{x}}{dt} = A\mathbf{x} + b$$
+où $\mathbf{x}$ est un vecteur de dimension $n$ tel que $x_i = \frac{dx_{i-1}}{dt}$, pour $i \in \{ 2, ..., n\}$. Le nombre $n$ est le degré de l'équation différentielle de départ.
+Dans notre cas $n=2$, $x_1 = i$, et $x_2 = \frac{di}{dt}$.
+On a donc le système
+\begin{align*}
+\frac{dx_1}{dt} &= x_2 \\
+\frac{dx_2}{dt} &= -\frac{1}{LC} x_1 - \frac{R}{L} x_2\\
+\end{align*}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Résolution numérique - code}
+Voir \url{https://github.com/bcornelusse/ELEC0053-circuits-electriques/blob/master/RT/RLC.py}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Résolution numérique - code - paramètres}
+\begin{python}
+# -*- coding: utf-8 -*-
+
+# Example numerical solution of RLC circuit, 
+# for the free response case.
+
+from scipy import integrate  # for ODE solution
+from pylab import *  # for plotting commands
+
+# Parameters
+R_0 = 560.  # Ohm
+L = 0.1  # 100 mH
+C = 0.1e-6  # 0.1 microF
+u_c0 = 100  # V, initial voltage accross C
+\end{python}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Résolution numérique - code - dynamique et conditions initiales}
+	\begin{python}
+def rlc(A, t):
+	"""The function that encodes the dynamics of 
+	the RLC circuit."""
+	
+	# x_1 represents i, x_2 represents di/dt
+	x_1, x_2 = A  
+	rhs = array([x_2, (-1/(L*C)*x_1 - R/L*x_2)])
+	return rhs
+
+# Pay attention to the initial conditions
+initial_conditions = [0, u_c0/L]  
+\end{python}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Résolution numérique - code - résolution pour $i$, préparation }
+\begin{python}
+# Simulation period: time spans around 2 ms, 
+# divided in 1000 intervals
+time = linspace(0.0, 2e-3, 1001)
+
+# Create a figure environment for plotting.
+figure()
+
+# List of resistor values we are going to simulate 
+R_list = [R_0, 2000, 10*R_0]
+legend_names = ["$R=%.0f \Omega$" % r for r in R_list] # for plotting
+\end{python}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Résolution numérique - code - résolution pour $i$ }
+\begin{python}
+for r in R_list:
+	R = r  # Global variable, changes value used in rlc()
+	# This is where the solution takes place.
+	i, di = integrate.odeint(rlc, initial_conditions, time).T
+	# i now contains the evolution of the current
+	# di now contains the evolution of the time derivative 
+	# of the current
+	plot(1000*time, i)
+
+# Plot formating
+legend(legend_names)
+xlabel('$t$ [ms]')
+ylabel('$i(t)$ [A]')
+show()
+\end{python}
+\end{frame}
+
+\begin{frame}{Résolution numérique - résultat}
+\begin{center}
+\includegraphics[width=0.6\linewidth]{exemple_numerique_i}
+\end{center}
+\end{frame}
+
+\begin{frame}{Résolution numérique - résultat}
+\begin{center}
+\includegraphics[width=0.6\linewidth]{exemple_numerique_v_l}
+\end{center}
+\end{frame}
+
+\subsection{Réponse forcée}
+\begin{frame}{Réponse forcée}
+	
+	Les deux éléments accumulateurs d'énergie ($L$ et $C$) sont
+	initialement relaxés.
+	\begin{columns}
+	\begin{column}[c]{4cm}
+		\centering
+	\includegraphics[width=1\linewidth]{figs/RLC_serie}
+	\end{column}
+	\begin{column}[c]{6cm}
+		\[L\frac{di}{dt}+R\, i+\frac{1}{C}\int_0^t i\, dx = V_s\]
+		En dérivant :
+		\begin{gather*}
+		L\frac{d^2i}{dt^2}+R\frac{di}{dt}+\frac{1}{C} i = 0\\
+		\frac{d^2i}{dt^2}+\frac{R}{L}\frac{di}{dt}+\frac{1}{LC} i = 0
+		\end{gather*}
+	\end{column}
+	\end{columns}
+	
+	Même forme de solution pour le courant $i$ que dans le cas de la réponse libre.\\
+	Dans les différentes expressions, remplacer $u_{C0}$ par $V_s$.
+\end{frame}
+
+
+
+\begin{frame}{Tensions aux bornes des éléments du circuit}
+	
+	\begin{align*}
+	u_R(t) & =Ri(t) \quad \text{idem réponse libre avec $u_{C0}$ remplacé par $V_s$} \\
+	u_L(t) & = L\frac{di}{dt} \quad \text{idem réponse libre avec $u_{C0}$ remplacé par $V_s$} \\
+	u_C(t) & = V_s-u_R(t)-u_L(t)
+	\end{align*}
+	Dans le cas du régime oscillatoire amorti, on trouve :
+	\[u_C(t)=V_s-\frac{\alpha V_s}{\omega_d}e^{-\alpha t}\sin \omega_d t - V_se^{-\alpha t}\cos \omega_d t\]
+\end{frame}
+
+
+\section{Synthèse}
+\begin{frame}
+	
+	\frametitle{Synthèse}
+	
+	\vfill
+	
+	On considère des circuits comportant:
+	\begin{itemize}
+		\item[$\bullet$] des sources \textbf{indépendantes} d'énergie
+		\item[$\bullet$] des éléments \textbf{linéaires} et \textbf{invariants} : 
+		\begin{itemize}
+			\item R: dissipe, ne stocke aucune énergie
+			\item C, L: non-dissipatifs, emmagasinent une énergie: \\ \vspace{0.3 cm} \hspace{1 cm} $w_C = \frac{1}{2} C V^2, \hspace{0.5 cm} w_L = \frac{1}{2} L I^2$
+		\end{itemize} 
+	\end{itemize}
+	
+	\vspace{0.5 cm}
+	
+	On étudie les phénomènes \textbf{transitoires} résultant:
+	\begin{itemize}
+		\item[$\bullet$] d'une variation brusque des courants/tensions des sources \\ \hspace{0.5 cm} $\Rightarrow$ \textbf{Réponse forcée}
+		\item[$\bullet$] d'une restitution  de l'énergie emmagasinée (par C, L) \\ \hspace{0.5 cm} $\Rightarrow$ \textbf{Réponse libre}
+	\end{itemize}
+	
+	\vfill
+	
+\end{frame}
+%--------------------------------------------------------------------------------------------------------------------
+\begin{frame}
+	\frametitle{Synthèse}
+	
+	\vfill
+	
+	Tension et courant dans un \textbf{condensateur}: 
+	
+	$$ v_c (t) = \frac{1}{C} \int_{-\infty}^{t} i_c(t') \: \mathrm{d}t' = v_c(0) + \frac{1}{C} \int_{0}^{t} i_c(t') \: \mathrm{d}t' \hspace{0.2 cm} \mbox{(continuité)}$$
+	$$\Leftrightarrow \hspace{0.3 cm} \boxed{i_c(t) = C \dfrac{\mathrm{d} v_c(t)}{\mathrm{d}t}} \hspace{0.3 cm} \Rightarrow [C] = s/\Omega \equiv \mbox{Farad}$$
+	
+	\vspace{0.5 cm}
+	
+	Tension et courant dans une \textbf{inductance}:
+	
+	$$ i_L(t) = \frac{1}{L} \int_{-\infty}^{t} v_L(t') \: \mathrm{d}t' = i_L(0) + \frac{1}{L} \int_{0}^{t} v_L(t') \: \mathrm{d}t' \hspace{0.2 cm} \mbox{(continuité)}$$
+	$$\Leftrightarrow \hspace{0.3 cm} \boxed{v_L(t) = L \dfrac{\mathrm{d} i_L(t)}{\mathrm{d}t}} \hspace{0.3 cm} \Rightarrow [L] = \Omega.s \equiv \mbox{Henry}$$
+	
+	\vfill
+	
+\end{frame}
+%--------------------------------------------------------------------------------------------------------------------
+\begin{frame}
+	\frametitle{Synthèse}
+	
+	\begin{minipage}{0.4\textwidth}
+		Circuit \textbf{RC}: $\boxed{\tau = RC}$ 
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\begin{circuitikz}[european voltages]
+			\draw
+			(0,0)
+			to[american voltage source, l=$e(t)$, invert] ++(0,1.8)
+			to[R, l=$R$, i>=$i(t)$] ++(4,0) coordinate (A)
+			to[C, v^=$v_c(t)$] ++(0,-1.8)
+			--(0,0)
+			;
+		\end{circuitikz}
+	\end{minipage}
+	
+	\vfill
+	\begin{minipage}[l]{.48\linewidth}
+		\begin{center}
+			Réponse forcée \\ \vspace{0.3 cm}
+			\includegraphics[scale=0.3]{echelon-tension1} \\
+			\hspace{1 cm} \includegraphics[scale=0.3]{charge-condensateur}
+		\end{center}
+	\end{minipage}
+	\begin{minipage}[l]{.48\linewidth}
+		\begin{center}
+			Réponse libre \\ \vspace{0.3 cm}
+			\includegraphics[scale=0.3]{echelon-tension2} \\
+			\hspace{0,9 cm} \includegraphics[scale=0.3]{decharge-condensateur}
+		\end{center}
+	\end{minipage}
+	
+	
+	\vfill
+	
+\end{frame}
+
+%--------------------------------------------------------------------------------------------------------------------
+\begin{frame}
+	\frametitle{Synthèse}
+	
+	\begin{minipage}{0.4\textwidth}
+		Circuit \textbf{RL}: $\boxed{\tau = L/R}$  
+	\end{minipage}\begin{minipage}{0.45\textwidth}
+	\begin{circuitikz}[european voltages]
+		\draw
+		(0,0)
+		to[american voltage source, l=$e(t)$, invert] ++(0,1.8)
+		to[R, l=$R$, i>=$i_L(t)$] ++(4,0) coordinate (A)
+		to[L] ++(0,-1.8)
+		--(0,0)
+		;
+	\end{circuitikz}
+\end{minipage}
+	\vfill
+\begin{minipage}[l]{.48\linewidth}
+	\begin{center}
+		Réponse forcée \\ \vspace{0.3 cm}
+		\includegraphics[scale=0.3]{echelon-tension1} \\
+		\hspace{1 cm} \includegraphics[scale=0.3]{etablissement-courant}
+	\end{center}
+\end{minipage}
+\begin{minipage}[l]{.48\linewidth}
+	\begin{center}
+		Réponse libre \\ \vspace{0.3 cm}
+		\includegraphics[scale=0.3]{echelon-tension2} \\
+		\hspace{0,8 cm} \includegraphics[scale=0.3]{rupture-courant}
+	\end{center}
+\end{minipage}
+
+
+\vfill
+
+\end{frame}
+%--------------------------------------------------------------------------------------------------------------------
+
+
+\begin{frame}
+	\frametitle{Synthèse} 
+	\vfill
+	
+	Circuit \textbf{RLC série} initialement relaxé, source continue $V$ appliquée en $t=0$:
+	\begin{center}
+		$\boxed{\dfrac{\mathrm{d}^2 i(t)}{\mathrm{d}t^2} + \dfrac{R}{L} \dfrac{\mathrm{d} i(t)}{\mathrm{d}t} + \frac{1}{LC} i(t) = 0}\qquad   \alpha = \dfrac{R}{2L} \hspace{0.5 cm} \omega_0 = \dfrac{1}{\sqrt{LC}}$\\[5mm]
+		$s^2 + \frac{R}{L} s + \frac{1}{LC} = 0 \hspace{1 cm} \ \Rightarrow \ s_{1, \: 2} = - \alpha \pm \sqrt{\alpha^2 - \omega_0^2}$ 
+	\end{center}
+	\begin{minipage}[c]{.5\linewidth}
+		
+		\begin{itemize}
+			\item \textcolor{myRed}{$\alpha^2 - \omega_0^2 = \alpha_1^2> 0$} $\rightarrow$ Régime \textcolor{myRed}{apériodique}:
+			\begin{center}
+				\vspace{0.2 cm}
+				$i(t) = \frac{V}{\alpha_1 L} \: e^{- \alpha t} \: sinh(\alpha_1 t), \ t \geq 0$
+				\vspace{0.2 cm}
+			\end{center}
+			\item \textcolor{myRed}{$\alpha^2 - \omega_0^2 = 0$} $\rightarrow$ Régime \textcolor{myRed}{apériodique critique}
+			\begin{center}
+				\vspace{0.2 cm}
+				$i(t) = \frac{V}{L} \: t \: e^{- \alpha t}, \ t \geq 0$
+				\vspace{0.2 cm}
+			\end{center}
+			\item \textcolor{myRed}{$\alpha^2 - \omega_0^2 = - \omega_d^2 < 0$} $\rightarrow$ Régime \textcolor{myRed}{oscillatoire amorti}
+			\begin{center}
+				\vspace{0.2 cm}
+				$i(t) = \frac{V}{\omega_d L} \: e^{- \alpha t} \: sin(\omega_d t), \ t \geq 0$
+				\vspace{0.2 cm}
+			\end{center}
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}[l]{.15\linewidth}
+		\begin{center}
+			\begin{circuitikz}[european voltages]
+				\draw
+				(0,0)
+				to[american voltage source, l_=$V$, invert] ++(0,4)
+				to[short, i=$i$] ++ (1.5,0)
+				to[R, l=$R$] ++(0,-1.5) coordinate (A)
+				to[L, l=$L$] ++(0,-1.5)
+				to[C, l=$C$] ++(0,-1)
+				--(0,0)
+				;
+			\end{circuitikz}
+			%\includegraphics[scale=0.05]{RLC_series_circuit}
+		\end{center}
+	\end{minipage}
+	
+	\vfill	
+\end{frame}
+%--------------------------------------------------------------------------------------------------------------------
+
+
+\end{document}

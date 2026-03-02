@@ -1,0 +1,112 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+
+
+\title{Circuit RL en Régime Sinusoïdal}
+\author{Solution détaillée}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Énoncé et Données}
+Un circuit série est alimenté par une source de tension sinusoïdale de valeur efficace $V_{eff} = 230 \, \text{V}$ et de fréquence $f = 50 \, \text{Hz}$. Le circuit est composé de :
+\begin{itemize}
+    \item Une résistance $R = 10 \, \Omega$
+    \item Une inductance $L = 100 \, \text{mH} = 0,1 \, \text{H}$
+\end{itemize}
+
+\section{Analyse de l'Impédance}
+La pulsation du signal est donnée par :
+\[ \omega = 2\pi f = 2\pi \cdot 50 = 100\pi \approx 314,16 \, \text{rad/s} \]
+
+L'impédance complexe totale $Z_{eq}$ du circuit série est :
+\[ Z_{eq} = R + jL\omega = 10 + j(0,1 \cdot 100\pi) = 10 + j31,4 \, \Omega \]
+
+\textbf{Forme polaire :}
+\begin{itemize}
+    \item Module : $|Z_{eq}| = \sqrt{R^2 + (L\omega)^2} = \sqrt{10^2 + 31,4^2} \approx 32,95 \, \Omega$
+    \item Phase (déphasage) : $\phi = \arctan\left(\frac{L\omega}{R}\right) = \arctan\left(\frac{31,4}{10}\right) \approx 72,3^\circ$
+\end{itemize}
+
+\section{Calcul de l'Intensité}
+En prenant la tension comme référence de phase ($\underline{V} = 230e^{j0}$), l'intensité complexe est :
+\[ \underline{I} = \frac{\underline{V}}{Z_{eq}} = \frac{230}{32,95e^{j72,3^\circ}} \approx 6,98 e^{-j72,3^\circ} \, \text{A} \]
+La valeur efficace du courant est donc $I_{eff} \approx 6,98 \, \text{A}$.
+
+\section{Bilan des Puissances}
+La puissance complexe $\underline{S}$ est obtenue par le produit de la tension et du conjugué complexe de l'intensité (produit hermitique) :
+\[ \underline{S} = \underline{V} \cdot \underline{I}^* = 230 \cdot 6,98e^{+j72,3^\circ} \]
+\[ \underline{S} \approx 1605,4e^{j72,3^\circ} \, \text{VA} \]
+
+En utilisant la forme rectangulaire $\underline{S} = P + jQ$ :
+\begin{itemize}
+    \item \textbf{Puissance active :} $P = \text{Re}(\underline{S}) = 1605,4 \cdot \cos(72,3^\circ) \approx 487 \, \text{W}$
+    \item \textbf{Puissance réactive :} $Q = \text{Im}(\underline{S}) = 1605,4 \cdot \sin(72,3^\circ) \approx 1529 \, \text{var}$
+\end{itemize}
+
+\section{Synthèse des Résultats}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcr}
+        \toprule
+        Grandeur & Symbole & Valeur \\
+        \midrule
+        Impédance totale & $|Z_{eq}|$ & $32,95 \, \Omega$ \\
+        Courant efficace & $I_{eff}$ & $6,98 \, \text{A}$ \\
+        Facteur de puissance & $\cos \phi$ & $0,30$ \\
+        Puissance apparente & $S$ & $1605,4 \, \text{VA}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Compensation de la Puissance Réactive}
+L'objectif est de relever le facteur de puissance à $\cos \phi' = 0,9$ en installant un condensateur de capacité $C$ en parallèle de l'ensemble $\{R, L\}$.
+
+\subsection{Nouvelle Puissance Réactive Ciblée}
+La puissance active $P$ reste inchangée ($P \approx 487 \, \text{W}$). Pour un nouveau $\cos \phi' = 0,9$, l'angle de déphasage devient :
+\[ \phi' = \arccos(0,9) \approx 25,84^\circ \]
+
+La nouvelle puissance réactive totale $Q_{tot}$ souhaitée est :
+\[ Q_{tot} = P \cdot \tan(\phi') = 487 \cdot \tan(25,84^\circ) \approx 235,8 \, \text{var} \]
+
+\subsection{Calcul de la Capacité $C$}
+Le condensateur doit fournir la différence de puissance réactive entre l'état initial ($Q = 1529 \, \text{var}$) et l'état final ($Q_{tot} = 235,8 \, \text{var}$) :
+\[ Q_C = Q_{tot} - Q = 235,8 - 1529 \approx -1293,2 \, \text{var} \]
+
+La puissance réactive d'un condensateur est donnée par $Q_C = -C\omega V_{eff}^2$. On en déduit $C$ :
+\[ C = \frac{-Q_C}{\omega V_{eff}^2} = \frac{1293,2}{314,16 \cdot 230^2} \]
+\[ C \approx 77,8 \cdot 10^{-6} \, \text{F} \approx 77,8 \, \mu\text{F} \]
+
+\subsection{Impact sur le Courant de Ligne}
+Grâce à cette compensation, le nouveau courant efficace appelé à la source est :
+\[ I'_{eff} = \frac{P}{V_{eff} \cdot \cos \phi'} = \frac{487}{230 \cdot 0,9} \approx 2,35 \, \text{A} \]
+
+\textbf{Conclusion :} En ajoutant ce condensateur, on divise le courant de ligne par près de 3 (passant de $6,98 \, \text{A}$ à $2,35 \, \text{A}$), tout en fournissant la même puissance active à la charge. Cela réduit considérablement les pertes par effet Joule dans les câbles d'alimentation.
+
+\section{Question de Réflexion : Dimensionnement des Conducteurs}
+
+\textbf{Énoncé :} 
+Un technicien doit choisir le câble d'alimentation pour le circuit de l'exercice (cas $L = 100 \, \text{mH}$). Il lit sur la plaque signalétique que l'appareil consomme une puissance active $P = 487 \, \text{W}$. 
+Pensant bien faire, il calcule le courant en faisant $I = P / V_{eff} = 487 / 230 \approx 2,1 \, \text{A}$ et choisit un câble de très faible section.
+
+\textbf{Question :} 
+Expliquez pourquoi ce raisonnement est dangereux et quel est le risque réel pour l'installation.
+
+\textbf{Solution pour l'enseignant :}
+Le raisonnement est erroné car le câble est traversé par le courant \textit{réel} (le courant efficace $I_{eff}$), et non par le "courant actif". 
+\begin{itemize}
+    \item Comme vu précédemment, le courant réel est de $6,98 \, \text{A}$ à cause du faible facteur de puissance ($\cos \phi = 0,3$).
+    \item Le courant circulant est donc \textbf{plus de 3 fois supérieur} à ce que le technicien a prévu.
+    \item \textbf{Risque :} Le câble va subir un échauffement par effet Joule ($R_{câble} \cdot I^2$) 9 fois supérieur aux prévisions ($3^2 = 9$), ce qui peut entraîner la fonte des isolants et un incendie.
+\end{itemize}
+\textit{Moralité : On dimensionne toujours une installation en fonction de la puissance apparente $S$ (ou du courant efficace $I_{eff}$), jamais uniquement selon la puissance active $P$.}
+
+\end{document}

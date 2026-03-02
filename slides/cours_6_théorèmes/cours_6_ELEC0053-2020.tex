@@ -1,0 +1,470 @@
+% !TeX spellcheck = fr_FR
+\input{OD_config.tex}
+
+\usepackage{tikz}
+
+\title{\textbf{} ELEC0053 Circuits électriques \\[2mm] --- \\[2mm] Théorèmes fondamentaux}
+\author{Bertrand Corn\'elusse}
+
+\usepackage{tikz}
+\usepackage[americanresistors,americaninductors,siunitx]{circuitikz}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{pgfplots}
+\input{phasor.tex}
+
+\newcommand{\mymotor}[2] % #1 = name , #2 = rotation angle
+{\draw[thick,rotate=#2] (#1) circle (10pt)
+	node[]{$\mathsf M$} 
+	++(-12pt,3pt)--++(0,-6pt) --++(2.5pt,0) ++(-2.8pt,6pt)-- ++(2.5pt,0pt);
+	\draw[thick,rotate=#2] (#1) ++(12pt,3pt)--++(0,-6pt) --++(-2.5pt,0) ++(2.8pt,6pt)-- ++(-2.5pt,0pt);
+}
+
+\newcommand{\mymotorB}[1] % #1 = name 
+{\draw[thick] (#1) circle (12pt)
+	node[above=-3pt]{$\mathsf M$} ++(-8pt,-3pt)--++(15pt,0);
+	\draw[thick,dashed] (#1) ++(-8pt,-5pt)--++(15pt,0);
+}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame}{Qu'allons nous faire dans ce cours ?}
+	
+	Ce chapitre est consacré aux principaux théorèmes régissant les circuits électriques étudiés dans ce cours, afin notamment de comprendre 
+	\pause
+	\begin{itemize}
+		\item l'\textbf{impact de plusieurs excitations} agissant simultanément: \textbf{superposition}
+		\item comment \textbf{simplifier un circuit}: Thévenin / Norton.
+	\end{itemize}
+	
+	\pause
+	\vfill 
+	
+	Ce chapitre se limite au régime en courant continu établi. 
+ 	\begin{itemize}	
+ 		\item Les méthodes sont cependant directement \textbf{extensibles aux autres régimes}, par exemple au cas du régime sinusoïdal, par l'emploi des phaseurs.
+	\end{itemize}
+	
+	\vfill 
+	\pause
+	\textbf{Dans le syllabus : le chapitre 5.}
+	
+\end{frame}
+
+\begin{frame}{Exercices que vous devez être capables de résoudre à l'issue de ce cours }
+
+Tous les exercices du chapitre 5.
+
+\end{frame}
+
+
+
+\begin{frame}{Plan du cours}
+	\tableofcontents
+\end{frame}
+
+%-------------------------------------------------------------------------------
+
+
+
+%\section{Théorème de Tellegen}
+%\begin{frame}{Théorème de Tellegen}
+
+%\begin{itemize}
+%\item Le théorème de Tellegen indique que la puissance totale fournie par un réseau est nulle à tout instant.
+%\item On peut aussi dire que les lois de Kirchhoff impliquent la conservation de l'énergie.
+%\item Ce théorème est général et s'applique à des circuits linéaires ou non linéaires, variants ou
+%invariants, passifs ou actifs, réciproques ou non. La seule contrainte est celle imposée
+%par les lois de Kirchhoff, à savoir le caractère localisé des circuits.
+%\item (Ce théorème peut être démontré de manière assez élégante en utilisant les représentations matricielles décrites au dernier chapitre.)
+%\end{itemize}
+%\end{frame}
+
+
+\section{Théorème de substitution}
+\begin{frame}{Théorème de substitution}
+
+\begin{block}{\'Enoncé}
+\pause[1]
+Soit un réseau comportant un certain nombre de sources indépendantes d'énergie et
+soumis à des conditions initiales déterminées. Supposons que ce réseau possède une solution unique, fonction des signaux délivrés par ces sources et conditions initiales. Remplaçons une de ses branches, supposée non couplée avec les autres, 
+\begin{itemize}
+	\pause[2]
+	\item soit par un générateur idéal de tension dont la f.e.m. est égale à la tension de la branche préexistante.
+	\pause[3]
+	\item soit par un injecteur idéal de courant dont le courant est égal à celui parcourant la branche préexistante
+\end{itemize}
+\pause[4]
+\textbf{Le théorème de substitution affirme que la solution du réseau ainsi modifié sera identique à celle du réseau initial.}
+\end{block}
+\begin{center}
+\pause[1]
+\includegraphics[height=3cm]{figs/theoremes/substitution_1}
+\pause[2]
+\includegraphics[height=3cm]{figs/theoremes/substitution_2}
+\pause[3]
+\includegraphics[height=3cm]{figs/theoremes/substitution_3}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Validité, applications}
+\begin{itemize}
+\item Il est valable pour tout réseau \textbf{localisé} possédant une \textbf{solution unique}.
+\item Certainement valable pour tout réseau linéaire (à l'exception peut être de certains cas
+dégénérés), il peut également s'appliquer aux réseaux non-linéaires remplissant ces conditions.
+\item Il permet de transformer un circuit comportant un seul élément variant
+(ou quelquefois non linéaire) en un circuit invariant (respectivement linéaire), en remplaçant l'élément "indésirable" par une source indépendante d'énergie. 	
+\item Il est utilisé pour la démonstration d'autres théorèmes.
+\end{itemize}
+\end{frame}
+
+
+\section{Théorème de superposition}
+\begin{frame}{Théorème de superposition}
+
+\begin{block}{\'Enoncé}
+Soit un réseau linéaire, initialement relaxé et possédant un certain nombre de sources
+indépendantes d'énergie. La réponse de ce réseau à toutes les excitations agissant simultanément est égale à la somme des réponses obtenues lorsque chacune d'elles agit seule
+(les autres excitations ayant été éliminées). 
+\end{block}
+\vfill
+On entend par \textbf{"élimination d'une excitation"} 
+\begin{itemize}
+	\item la mise en court-circuit de ses bornes s'il s'agit d'une source de tension ($e_s = 0$),
+	\item l'ouverture de ses bornes s'il s'agit d'une source de courant ($j_s = 0$).
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Validité}
+Le théorème de superposition est valable pour tout circuit à \textbf{éléments localisés},
+\textbf{linéaires et initialement relaxés}, puisqu'il est basé sur le caractère linéaire et homogène
+des relations fournies par les lois de Kirchhoff et des relations $u$ -- $i$ de ses branches.
+\end{frame}
+
+\begin{frame}{Illustration du théorème de superposition}
+	
+\begin{center}
+		\includegraphics[width=0.8\linewidth]{figs/theoremes/superposition_illu}
+\end{center}
+\end{frame}
+
+
+\section{Théorème de Thévenin}
+\begin{frame}{Théorème de Thévenin}
+
+\begin{block}{\'Enoncé}
+Tout réseau $\mathcal{R}$ linéaire, initialement relaxé et vu d'un accès peut être remplacé par
+une source équivalente de tension constituée d'une force électromotrice, $v_{Th}$ , en série
+avec le dipôle $R_{Th}$ où :
+\begin{itemize}
+	\item $v_{Th}$ est numériquement égale à la différence de potentiel aux bornes de l'accès à vide ;
+	\item $R_{Th}$ est le réseau $\mathcal{R}$ \textit{passifié} : dipôle vu de l'accès considéré, obtenu à partir de $\mathcal{R}$
+	lorsque l'on élimine toutes les sources indépendantes d'énergie.
+\end{itemize}
+\end{block}
+
+La charge connectée aux bornes de la "source équivalente de Thévenin" ainsi définie est supposée dépourvue de couplages avec $\mathcal{R}$.
+
+\begin{center}
+	\includegraphics[width=0.7\linewidth]{figs/theoremes/thevenin}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Démonstration - étape 1}
+Par application du théorème de substitution, on remplace la charge par une source de courant. Cela est possible si le réseau $\mathcal{R}$ a une solution unique -- ce qui est le cas si le réseau est linéaire -- la charge a une solution unique, et il n'y a pas de couplage entre la charge et $\mathcal{R}$.
+\begin{center}
+	\includegraphics[width=\linewidth]{figs/theoremes/th1}
+\end{center}
+\end{frame}
+
+\begin{frame}{Démonstration - étape 2.} On applique le théorème de superposition :  
+\begin{enumerate}
+	\item la source $i_L$ agit seule, les sources indépendantes de $\mathcal{R}$ sont passifiées,
+	\item la source $i_L$ est passifiée, les sources indépendantes de $\mathcal{R}$ sont actives.
+\end{enumerate}
+On a 
+\begin{align*}
+	u_L &= u_1 + u{co}\\
+	i_L &= i_L + 0
+\end{align*}
+\begin{center}
+	\includegraphics[width=0.9\linewidth]{figs/theoremes/th2}
+\end{center}
+\end{frame}
+
+\begin{frame}{Démonstration - étape 3}
+On dérive le schéma équivalent de Thévenin.
+On a $$u_L = u_1 + v_{Th}$$
+\begin{center}
+\includegraphics[width=0.5\linewidth]{figs/theoremes/th3}
+\end{center}
+Donc
+\begin{itemize}
+	\item $v_{Th} = u_{co}$ est la tension apparaissant aux bornes du circuit à vide, c-à-d lorsque l'accès est laissé ouvert
+	\item $u_1 = R_{Th}i_L$, où $R_{Th}$ est la résistance équivalente du circuit $\mathcal{R}$ passifié, égale à la résistance d'entrée du circuit passifié, égale à la résistance mesurée aux bornes de l'accès, c-à-d le rapport $u/i$ mesuré lorsque toutes les sources indépendantes de $\mathcal{R}$ ont été rendues inactives.
+	$$u_L = v_{Th} + R_{Th} i_L.$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Détermination des paramètres $v_{Th}$ et $R_{Th}$}
+
+\begin{block}{Détermination de $v_{Th}$ et $R_{Th}$}
+Pour déterminer $v_{Th}$, il suffit de déterminer la d.d.p aux  bornes du circuit à vide, i.e. lorsqu'aucune charge n'y est connectée.
+\vfill
+Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
+\begin{enumerate}
+	\item considérer le circuit passifié, injecter un courant de $1$ A à
+	l'accès et calculer la d.d.p. $u$ apparaissant à cet accès. On a alors 
+	$R_{Th}=u$ (en valeur).
+	\item par un essai en court-circuit :
+	\[u_L=0 \quad \Longrightarrow  \quad v_{Th}=R_{Th}i_{cc}  \quad \Longrightarrow 
+	\quad R_{Th}=\frac{v_{Th}}{i_{cc}}\]
+	\item quand c'est possible, par réduction successive des associations
+	séries et parallèles de dipôles.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\begin{frame} {Exemple : résistances linéaires et sources indépendantes}
+	
+	Déterminons le schéma équivalent de Thévenin du circuit :
+	\begin{center}
+		\includegraphics[width=0.6\linewidth]{figs/theoremes/ex_Th_1}
+	\end{center}
+	$v_{Th}$ est la tension à vide à l'accès, donc, comme le courant dans la résistance de $4\Omega$ est nul, 
+	\[v_{Th}=v_{3A}\] 
+	Par application de la PLK, on a 
+	$$\frac{v_{Th}-25}{5}+\frac{v_{Th}}{20}-3=0 $$
+	et donc $v_{Th}=32 \, \text{V}$
+\end{frame}
+	
+\begin{frame} {Exemple : ...}
+		
+	On détermine ensuite $R_{Th}$ par essai en court-circuit et donc le calcul de $i_{cc}$ :
+	\begin{center}
+		\includegraphics[width=0.6\linewidth]{figs/theoremes/ex_Th_2}
+	\end{center}
+	Par la PLK,
+	$$\frac{v_{3A}-25}{5}+\frac{v_{3A}}{20}-3 +
+	\frac{v_{3A}}{4}=0 $$
+	Donc
+	$$v_{3A}=16\, \text{V}$$
+	et
+	$$i_{cc}=\frac{16}{4}=4 \,\text{A}.$$
+	Finalement, 
+	$$ R_{Th}=\frac{v_{Th}}{i_{cc}}=8\, \Omega.$$
+\end{frame}
+
+\begin{frame} {Exemple : Détermination de $R_{Th}$ par passification et réduction}
+	Le circuit de l'exemple précédent ne comporte que des résistances et aucune source commandée. 
+	Dans ce cas, il est plus simple de rechercher la résistance équivalente du circuit passifié
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{figs/theoremes/ex_Th_3}
+	\end{center}
+	Vue de l'accès, la résistance de $4 \,\Omega$ est en série avec la mise en parallèle des deux autres résistances : 
+	\[R_{eq}=4+\frac{20.5}{20+5}=8\, \Omega\]
+\end{frame}
+
+\begin{frame}{Applications}
+	Le théorème de Thévenin a de nombreuses applications aussi bien pratiques que théoriques. Par exemple on peut citer le problème de l'adaptation et les analyses de sensibilités.
+\end{frame}
+
+
+
+\subsection{Adaptation et transfert de puissance maximum}			
+	\begin{frame}{Adaptation et transfert de puissance maximum}
+		
+		\begin{block}{Adaptation d'impédance}
+			\begin{columns}
+				\begin{column}{0.4\linewidth}
+					\centering
+					\includegraphics[width=0.9\linewidth]{adaptation_1}
+				\end{column}
+				\begin{column}{0.58\linewidth}
+					Choix de $Z_L$ pour rendre maximale la puissance moyenne reçue par cette charge.
+				\end{column}
+			\end{columns}
+		\end{block}
+		\vfill
+		On remplace le circuit par son schéma équivalent de Thévenin.
+		\begin{columns}
+			\begin{column}{0.58\linewidth}
+				\flushright
+				\includegraphics[width=0.7\linewidth]{adaptation_2}
+			\end{column}
+			\begin{column}{0.4\linewidth}
+				\begin{block}{}
+				$P_L$ max si
+				\[Z_L=Z_{Th}^*\]
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	%-----------------------------------------------------------------------------------
+	
+	\begin{frame}{Adaptation d'impédance ...}
+		\begin{columns}
+			\begin{column}{0.4\linewidth}
+				\flushright
+				\includegraphics[width=0.9\linewidth]{adaptation_2}
+			\end{column}
+			\begin{column}{0.58\linewidth}
+				\[Z_L = R_L + j X_L \qquad Z_{Th}=R_{Th}+jX_{Th}\]
+				\[\bar{I}=\frac{\bar{V}_{Th}}{Z_L+Z_{Th}}\]
+			\end{column}
+		\end{columns}
+		\vfill
+		\[P_L=R_LI^2=\frac{R_L
+			V_{Th}^2}{(R_L+R_{Th})^2+(X_L+X_{Th})^2}\]
+		\[Z_L \text{~qui maximise~$P_L$~:~}
+		\begin{cases}
+		\frac{\partial P_L}{\partial R_L}=0\\
+		\frac{\partial P_L}{\partial X_L}=0
+		\end{cases}\]
+	\end{frame}
+	
+	%-----------------------------------------------------------------------------------
+	
+	\begin{frame}{Adaptation d'impédance ...}
+		\[\frac{\partial P_L}{\partial X_L}=\frac{-V_{Th}^2 2R_L(X_L+X_{Th})}
+		{((R_L+R_{Th})^2+(X_L+X_{Th})^2)^2}\]
+		\[\frac{\partial P_L}{\partial X_L}=0 \rightarrow 
+		\begin{cases}
+		X_L=-X_{Th}\\
+		P_L=\frac{R_L
+			V_{Th}^2}{(R_L+R_{Th})^2}
+		\end{cases}\]
+		\[\frac{\partial P_L}{\partial
+			R_L}=\frac{V_{Th}^2(R_{Th}-R_L)}{(R_L+R_{Th})^3}\]
+		\[\frac{\partial P_L}{\partial R_L}=0 \rightarrow 
+		R_L=R_{Th}\]
+		
+		Finalement :
+		\begin{center}
+			\fbox{$Z_L=R_{Th}-jX_{Th}=Z_{Th}^*$}
+		\end{center}
+	\end{frame}
+	
+	%-----------------------------------------------------------------------------------
+	\begin{frame}{Caractéristiques de l'adaptation}
+		
+		\begin{enumerate}
+			\item Le courant délivré est en phase avec la source de Thévenin $$\bar{I}=\frac{\bar{V}_{Th}}{2R_L}$$\\
+			\item La source de Thévenin ne fournit pas de puissance réactive $$S_{s}=\bar{V}_{Th}\bar{I}^*=\frac{V_{Th}^2}{2R_L}= P_{s}$$
+			\item $50\%$ de la puissance est délivrée à la charge $Z_L$
+			\[P_{max}=R_LI^2=\frac{V_{Th}^2}{4R_L}=0.5P_{s}\]
+			\item La charge consomme (ou produit) de la puissance réactive: $Q_L=X_LI^2$.
+			\item Il y a une possibilité de surtension
+			\[U_L=|Z_L|I=|Z_L|\frac{V_{Th}}{2R_L}=\frac{V_{Th}}{2}\sqrt{1+\frac{X_L^2}{R_L^2}}
+			> V_{Th} \text{~si~}X_L>1.73R_L\]
+		\end{enumerate}				
+	\end{frame}
+	
+	%-----------------------------------------------------------------------------------
+	
+	\begin{frame}{Autres formes d'adaptation}
+		
+		
+		\begin{block}{Si seul $|Z_L|$ peut varier}
+			transfert maximum de puissance si \[|Z_L|=|Z_{Th}|\]
+		\end{block}
+		
+		\begin{block}{Si $Z_L$ est imposé}								
+			Insérer un transformateur idéal de rapport $n$ entre le circuit et la
+			charge.
+			
+			$n$ qui réalise le transfert maximum de puissance:
+			\[n^2=\frac{|Z_L|}{|Z_{Th}|}\]
+		\end{block}
+		
+	\end{frame}
+
+
+
+\section{Théorème de Norton}
+\begin{frame} {Théorème de Norton}
+\begin{block}{\'Enoncé}
+Soit un circuit ${\cal R}$ résistif linéaire comportant un certain
+nombre de sources indépendantes de tension et de sources
+indépendantes de courant vu d'un accès. Ce circuit peut être
+remplacé par un circuit équivalent constitué d'une source
+équivalente de courant $i_{No}$ en parallèle avec une conductance
+équivalente $G_{No}$ où :
+\begin{itemize}
+	\item $i_{No}$ est le  courant parcourant l'accès court-circuité
+	\item $G_{No}$ est la conductance équivalente du réseau ${\cal R}$
+	passifié.
+\end{itemize}
+\end{block}
+
+\begin{center}
+\includegraphics[width=0.6\linewidth]{figs/theoremes/norton}
+\end{center}
+\[i=-i_{No}+G_{No}u\]
+
+Le théorème de Norton se démontre selon le même schéma que celui du théorème de Thévenin.
+\end{frame}
+
+
+\begin{frame} {Détermination des paramètres $i_{No}$ et $G_{No}$}
+
+Pour $i_{No}$, il faut court-circuiter l'accès et déterminer le courant de	court-circuit $i_{cc}$.
+
+Pour $G_{No}$, il y a trois possibilités :
+\begin{enumerate}
+	\item considérer le circuit passifié, imposer une d.d.p. de $1$ V  à
+	l'accès et calculer le courant $i$ parcourant cet accès : $i=G_{No}$
+	\item par un essai à vide :
+	\[i=0 \quad \Longrightarrow  \quad i_{No}=G_{No}u_{co}  \quad \Longrightarrow 
+	\quad G_{No}=\frac{i_{No}}{u_{co}}\]
+	\item quand c'est possible, par réduction successive des associations
+	séries et parallèles de dipôles.
+\end{enumerate}
+\end{frame}
+
+
+\section{Equivalence de source}
+\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+
+En appliquant le théorème de Thévenin à une source de courant en parallèle avec une résistance, on peut établir la relation d'équivalence suivante :
+\begin{center}
+	\includegraphics[width=0.9\linewidth]{figs/theoremes/Equiv_source_2}
+\end{center}
+\end{frame}
+\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+
+De manière similaire, en appliquant le théorème de Norton à une source de tension en série avec une résistance, on peut établir la relation d'équivalence suivante :
+\begin{center}
+	\includegraphics[width=0.65\linewidth]{figs/theoremes/Equiv_source_1}
+\end{center}
+\end{frame}
+
+\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+En résumé, il est important de retenir qu'on peut passer d'une représentation à l'autre si et seulement si
+\begin{eqnarray*}
+	G_{No} &= \frac{1}{R_{Th}} \\
+	i_{No} &= \frac{v_{Th}}{R_{Th}}.
+\end{eqnarray*}
+\end{frame}
+
+
+\begin{frame} {Exemple : Equivalent de Thévenin par équivalence de source.}
+	En revenant à notre exemple, on voit qu'il est possible dans ce cas simple d'obtenir l'équivalent de Thévenin par équivalences de source successives : 
+	\begin{center}
+		\includegraphics[width=0.98\linewidth]{figs/theoremes/ex_eq_source}
+	\end{center}
+	
+\end{frame}
+
+
+\end{document}

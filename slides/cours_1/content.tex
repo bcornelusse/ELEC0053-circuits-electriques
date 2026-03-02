@@ -1,0 +1,714 @@
+%--------------------------------------
+% Create title frame
+\titleframe
+
+%--------------------------------------
+% Table of contents
+\begin{frame}{Overview}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+
+
+%--------------------------------------
+
+
+%\begin{frame}{}
+%  \begin{itemize}
+%        \item Un rappel des lois d’électromagnétisme utiles dans ce cours
+%        \item Les unités et conventions pour les principales grandeurs associées
+%        \item Les lois de Kirchhoff
+%        \item Les limites d’application de la théorie des circuits
+%        \item La loi d’Ohm et le composant résistance
+%        \item Les sources indépendantes de courant et de tension
+%  \end{itemize}
+%\end{frame}
+
+\begin{frame}{Correspondance avec le syllabus}
+  \begin{itemize}
+    \item Chapitre 1
+    \item Chapitre 2:
+    \begin{itemize}
+        \item Sections 2.1 à 2.5
+        \item Section 2.9
+    \end{itemize}
+    \item Merci de lire ces sections pour compléter les informations communiquées pendant le cours, avant la prochaine séance.
+  \end{itemize}
+
+  Exercices que vous serez capables de résoudre à l’issue de ce cours:
+  \begin{itemize}
+    \item 2.1 à 2.6
+    \item (2.7 et 2.8), plus avancés.
+  \end{itemize}
+\end{frame}
+
+\section{Introduction et lois fondamentales} 
+\begin{frame}{La théorie des circuits est à la base et/ou en relation avec beaucoup d'autres cours  }
+    \begin{itemize}
+        \item \'Electronique analogique
+        \item Conversion d'énergie électromagnétique
+        \item Analyse et conception des systèmes de mesures électriques
+        \item \'Electromagnétisme
+        \item Analyse des systèmes, traitement du signal
+        \item Systèmes d'énergie électrique
+        \item Certains modèles en thermodynamique
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Variables fondamentales : tension et courant}
+  Les phénomènes électriques sont liés : 
+  \begin{itemize}
+    \item À l’existence de charges électriques de deux types : $+$ et $-$
+    \item À la force d’attraction/répulsion qui existe entre des charges de signe différent ou de même signe
+  \end{itemize}
+
+Plus précisément : 
+
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    Aux charges électriques en mouvement : \alert{le courant} \\
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/run.png}
+  \end{column}
+  \begin{column}{0.45\textwidth}
+    À l’existence de charges maintenues séparées : \alert{la tension} \\
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/tension.png}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Charge électrique - loi de Coulomb}
+  \begin{columns}
+  \begin{column}{0.7\textwidth}
+  Une charge électrique se mesure en \textbf{Coulomb (C)}. 
+Deux charges électriques exercent l’une sur l’autre une force
+ \begin{itemize}
+    \item qui les repousse si elles sont de même signe,
+    \item qui les attire si elles sont de signes opposés.
+  \end{itemize}  
+    \end{column}
+  \begin{column}{0.25\textwidth}
+
+  \includegraphics[width=\textwidth]{images/Coulomb.jpg}
+  {\tiny \textit{Charles Augustin Coulomb, 1736 - 1806}}
+  \end{column}
+\end{columns}
+La loi de Coulomb exprime la nature de cette force (ici pour la force induite par la charge 1 sur la charge 2, et dans le vide) :
+\begin{columns}
+  \begin{column}{0.35\textwidth}
+  $$\vec{F}_{1/2} = \frac{1}{4 \pi \varepsilon_0} \frac{q_1 q_2 \vec{r}_{12}} {{d_{12}}^2}$$
+
+  \end{column}
+  \begin{column}{0.65\textwidth}
+\begin{itemize}
+	\item $\varepsilon_0$ est la perméabilité diélectrique du vide
+	\item $q_1$ et $q_2$ sont les quantités de charges signées des charges 1 et 2
+	\item $d_{12} = |\vec{r}_1 - \vec{r}_2|$
+  \item  $\vec{r}_{12} = \frac{\vec{r}_2- \vec{r}_1}{d_{12}}$
+\end{itemize}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Champ électrique et potentiel}
+  \begin{columns}
+  \begin{column}{0.7\textwidth}
+Considérons une charge ponctuelle. 
+
+Le \textbf{champ électrique} $\overrightarrow{E}$ qui en résulte définit à tout endroit de l’espace la force qu’exercerait la charge ponctuelle sur une charge d’un $C$ placée à cet endroit. 
+
+Un champ électrique exprime donc une \textbf{force par unité de charge}.
+
+Le \textbf{potentiel électrique} est l’intégrale linéique du champ électrique. 
+\begin{itemize}
+  \item Il a donc les dimensions d’une énergie par unité de charge. 
+  \item Il s’exprime en \textbf{Volt (V)}. 
+\end{itemize}
+
+Un champ électrique est souvent exprimé en Volt par mètre.
+  \end{column}
+  \begin{column}{0.25\textwidth}
+
+  \includegraphics[width=\textwidth]{images/champ_elec.png}
+  {\tiny \textit{Représentation du champ électrique pour deux charges ponctuelles fixes  de signes opposés
+}}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Tension ou différence de potentiel}
+\begin{columns}
+  \begin{column}{0.75\textwidth}
+  Dans ce cours nous utiliserons également la notion de tension : la différence de potentiel entre deux points.
+  La tension s’exprime donc en Volt également.
+
+  $$u_{12}=\frac{d w}{d q}=\int_1^2 \vec{E} \cdot \overrightarrow{d \ell}$$
+  \begin{center}
+  \includegraphics[width=0.2\textwidth]{images/tension_ddp.png}  
+  \end{center}
+  
+
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \includegraphics[width=\textwidth]{images/Volta.jpg} \\
+    \centering
+    \tiny \textit{Alessandro Volta, 1745-1827}
+  \end{column}
+\end{columns}
+  Dans un système laissé libre, une tension entre deux points d’un conducteur engendre un courant électrique au sein de ce conducteur.
+
+\end{frame}
+
+\begin{frame}{Courant}
+\begin{columns}
+  \begin{column}{0.65\textwidth}
+  \begin{itemize}
+    \item Courant électrique : flux des charges le long des lignes de force du champ électrique
+    \item L’intensité du courant $i(t)$ s’apparente donc à un débit
+          $$i(t) = \frac{dq}{dt}$$
+    \item L’unité est l’Ampère ($A$): une intensité de 1 $A$ signifie qu’une charge de 1$C$ traverse par seconde la section droite d’un conducteur
+    \item \alert{Par convention, un courant positif correspond à un mouvement de charges positives}, même si le plus souvent ce sont des électrons qui voyagent.
+  \end{itemize}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \includegraphics[width=\textwidth]{images/flux_courant.png} \\
+    \includegraphics[width=\textwidth]{images/Ampère.jpg} \\
+    \centering
+    \tiny \textit{André-Marie Ampère, 1775 - 1836}
+  \end{column}
+\end{columns}
+
+  
+
+\end{frame}
+
+\begin{frame}{Courant et champ magnétique}
+
+  \begin{itemize}
+    \item   Un déplacement de charges engendre un champ magnétique, qui se mesure en Ampère par mètre.
+    \item Un champ magnétique se traduit par l’existence d’une force agissant sur les charges électriques en mouvement (force de Lorentz). 
+    \item En régime stationnaire, il est soit dû à un courant, soit à un aimant permanent.
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Lois de Maxwell}
+
+\begin{columns}
+
+  \begin{column}{0.70\textwidth}
+En régime stationnaire, lorsque les champs ne varient pas avec le temps, elles s'écrivent (cf. Table~\ref{tab:grandeurs_EM}) : 
+$$
+\begin{array}{rcl}
+\int_S \overrightarrow{E}. \overrightarrow{dS}& =&  \frac{q}{\epsilon}\\
+\int_S \overrightarrow{B}. \overrightarrow{dS}& =&  0\\
+\int_C \overrightarrow{E}. \overrightarrow{d\ell} & = & 0\\
+\int_C \overrightarrow{B}. \overrightarrow{d\ell} & = & \mu I
+\end{array}$$
+  \end{column}
+    \begin{column}{0.25\textwidth}
+      \centering
+    \includegraphics[width=\textwidth]{images/Maxwell.jpg}
+  James Clerk Maxwell 1831 - 1879
+  \end{column}
+\end{columns}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+  ou localement 
+$$
+\begin{array}{rcl}
+\vec{\nabla} . \overrightarrow{D} & = & \rho \\ 
+\vec{\nabla} . \overrightarrow{B} &= & 0 \\ 
+\vec{\nabla} \times \overrightarrow{E} & = & 0 \\
+\vec{\nabla} \times \overrightarrow{H} & = & 
+\overrightarrow{J} 
+\end{array}$$
+  \end{column}
+  \begin{column}{0.45\textwidth}
+En régime non stationnaire :
+\begin{eqnarray*}
+	\vec{\nabla} . \overrightarrow{D} & = & \rho\\ 
+	\vec{\nabla} . \overrightarrow{B} &= & 0 \\ 
+	\vec{\nabla} \times \overrightarrow{E} & = & \mathcolor{blue}{- \frac{\partial
+		\overrightarrow{B}}{\partial t}}\\
+	\vec{\nabla} \times \overrightarrow{H} & = & 
+	\overrightarrow{J} \mathcolor{blue}{+ \frac{\partial \overrightarrow{D}}{\partial t}}
+\end{eqnarray*}
+  \end{column}
+\end{columns}
+
+\newpage
+  \begin{table}[h]
+    	\caption{Grandeurs caractéristiques d'un champ électromagnétique.} \label{tab:grandeurs_EM}
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		Symbole & Nom & Unité\\
+		\midrule
+		$\overrightarrow{E}$ & Champ  électrique & V/m\\
+		$\overrightarrow{D}=\epsilon \overrightarrow{E}$ & Induction électrique & C/m$^2$\\
+		$\rho$ & Densité de charges & C/m$^3$\\
+		$ \overrightarrow{J}$ & Densité de courant & A/m$^2$\\
+		$\overrightarrow{H}$ & Champ magnétique & A/m\\
+		$\overrightarrow{B}=\mu \overrightarrow{H}$ & Induction magnétique & Tesla\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\end{frame}
+
+\section{La notion de circuit électrique}
+
+\begin{frame}{Qu’est ce qu’un circuit électrique?}
+
+Un ensemble de composants électriques interconnectés et dotés de points accessibles à l'observation, \alert{des bornes}.
+
+\begin{columns}
+  \begin{column}{0.75\textwidth}
+
+Grande variété du point de vue
+\begin{itemize}
+  \item domaine d'application : omniprésents dans la vie courante et toutes les techniques
+  \item taille : circuits intégrés ( qq $\mathrm{~mm}^2$ ) vs. grands réseaux de transport de l'énergie électrique (qq centaines km)
+  \item tensions utilisées : qq $\mu \mathrm{V}$ jusqu'à centaines de kV
+  \item fréquence des signaux : qq Hz à dizaines de GHz
+  \item puissance : qq mW à plusieurs dizaines de milliers de MW
+\end{itemize}
+  
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \includegraphics[width=\textwidth]{images/PCB.jpg}\\
+    \includegraphics[width=\textwidth]{images/pilone.jpg}\\
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{En théorie des circuits}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    \begin{itemize}
+      \item Un circuit est ensemble d’éléments idéaux interconnectés = un modèle mathématique
+      \item Objet du cours : 
+      \begin{itemize}
+        \item L’analyse des propriétés et du comportement électrique des circuits 
+        \item La détermination des tensions aux bornes des éléments et des courants qui les traversent
+      \end{itemize} 
+    \end{itemize}
+
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{images/circuit_1.png}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Dipôle et sens conventionnels}
+  \begin{columns}
+    \begin{column}{0.78\textwidth}
+  \begin{itemize}
+    \item Un \textbf{dipôle} est un élément idéal à deux bornes, caractérisé par la paire de variables tension / courant ($u, i$).
+    \item Un dipôle occupe une \textbf{branche} d'un circuit.
+    \item Un \textbf{n{\oe}ud} est un point auquel aboutissent plusieurs branches.
+    \item La tension de branche $u(t)=v_{+}(t)-v_{-}(t)$ est la différence de potentiel entre la borne $+$ et la borne $-$
+    \item Le courant $i(t)$ entrant dans l'élément est égal au courant sortant de l'élément, il n'y a \textbf{pas d'accumulation de charges} dans l'élément.
+  \end{itemize}  
+\end{column}
+\begin{column}{0.2\textwidth}
+  \includegraphics[width=\textwidth]{images/dipôle.png}
+\end{column}
+\end{columns}
+L'orientation respective de $u$ (position des bornes + et -) et du sens de $i$ (indiqué par la flèche) dans la figure correspond à la \alert{convention
+ "moteur"} ...
+\end{frame}
+
+\begin{frame} {Sens de référence - convention moteur}
+  \begin{columns}
+    \begin{column}{0.78\textwidth}
+  \begin{itemize}
+    \item \textbf{Convention "moteur" : le courant $i$}
+    \begin{itemize}
+      \item \textbf{entre par la borne $+$}
+      \item \textbf{et sort par la borne $-$}
+    \end{itemize}
+    \item Si on mesure ou détermine par calcul que $u>0$, cela signifie que le potentiel de la borne $+$ est supérieur à la borne $-$
+    \item Si on mesure ou détermine par calcul que $i>0$, cela signifie que les charges positives vont de la borne $+$ à la borne $-$
+    \item Mais, en fonction de l'élément, du circuit qui l'entoure, et de la manière dont on a placé les bornes $+$ et $-$ , on pourrait avoir $u>0$ ou $u<0$, et $i>0$ ou $i<0$.
+  \end{itemize}  
+\end{column}
+\begin{column}{0.2\textwidth}
+  \includegraphics[width=\textwidth]{images/dipôle.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} {Convention}
+  \begin{columns}
+    \begin{column}{0.78\textwidth}
+    \begin{itemize}
+      \item L’adoption d’une convention n’est pas imposée par des raisons physiques. 
+      \item L’utilisation d’une convention est néanmoins importante : on sait que dans le cas de cette \textbf{convention moteur}, \alert{le produit $u(t)i(t)$ représente la puissance $p(t)$ fournie au dipôle à l’instant $t$.}
+    \end{itemize}
+\end{column}
+\begin{column}{0.2\textwidth}
+  \includegraphics[width=\textwidth]{images/warning.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} {Quadripôle}
+  \begin{columns}
+    \begin{column}{0.63\textwidth}
+    Un quadripôle est un (élément de) circuit comportant \alert{deux accès} (deux paires de bornes), 
+    chacun étant caractérisé par deux grandeurs : différence de potentiel (d.d.p.) et courant.
+
+Plus précisément, pour chacun des accès, le courant "entrant" par une de ses bornes en "sort" par l’autre. Les sens conventionnels associés sont indiqués sur la figure. Avec ces sens, la puissance totale fournie au quadripôle à l’instant $t$ est exprimée par :
+$$p(t) = i_1(t)u_1(t)+i_2(t)u_2(t) $$
+\end{column}
+\begin{column}{0.35\textwidth}
+  \includegraphics[width=\textwidth]{images/quadripôle.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\section{Les lois de Kirchhoff (LK)}
+\begin{frame}{Les 2 lois fondamentales de la théorie des circuits}
+\begin{columns}
+  \begin{column}{0.75\textwidth}
+  \begin{itemize}
+    \item \textbf{indépendantes} de la nature des éléments du circuit
+    \item expriment les contraintes imposées par la \textbf{topologie} du circuit  
+    \item sont valides uniquement sous l'hypothèse des \textbf{circuits localisés}
+    \item postulent la localisation des champs (électriques et magnétiques) exclusivement à l’intérieur des éléments et reposent sur deux hypothèses : 
+    \begin{itemize}
+      \item Pas d’accumulation de charges aux n{\oe}uds ni dans les éléments d’un circuit
+      \item Égalité entre tension et différence de potentiel : $\int_1^2 \vec{E} \cdot \overrightarrow{d \ell}$ indépendant du chemin suivi entre 1 et 2
+    \end{itemize}
+  \end{itemize}
+
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \includegraphics[width=\textwidth]{images/kirchhoff.jpg}
+    \centering
+    \tiny \textit{1824-1887}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Hypothèse des circuits localisés}
+  \begin{itemize}
+    \item Un circuit localisé et fini est constitué d’un nombre fini d’éléments localisés et de sources indépendantes d’énergie, elles aussi localisées.
+    \item Ces éléments et sources localisés sont interconnectés par l’intermédiaire de fils électriques supposés parfaits
+    \item La notion d’élément localisé est intimement liée à la notion de signal quasi-stationnaire, elle-même liée au temps de propagation de l’onde électrique et à la longueur d’onde $\lambda$ ou à la fréquence $f$ de celle-ci.
+    \item Un signal appliqué à un circuit est quasi-stationnaire si sa longueur d’onde est considérablement plus grande que les dimensions du circuit 
+    \item Le temps de propagation du signal est très inférieur à sa période.  
+  \end{itemize}
+  
+  Exemples : 
+  \begin{itemize}
+    \item Source de tension "secteur" : $f= 50 Hz$ (en Europe); $\lambda = 6000 km$
+    \item Signal électro acoustique : considérant que sa fréquence la plus élevée est $f= 25 kHz$ ; $\lambda= 12km$
+    \item Signaux utiliser dans les ordinateurs : par exemple $f= 3GHz$ (en Europe); $\lambda= 0,1 m$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Circuits distribués vs. circuits localisés}
+Soit un circuit de dimension $d$ soumis à un signal de fréquence $f$ (longueur d'onde $\lambda$ ) :
+\begin{itemize}
+  \item Si $d \ll \lambda$ : circuit localisé
+  \begin{itemize}
+  \item régime quasi-stationnaire
+  \item on peut supposer comme dans le régime stationnaire les champs électrique et magnétiques découplés ( $\frac{\partial \vec{B}}{\partial t}=\frac{\partial \vec{D}}{\partial t}=0$ à l'extérieur des éléments)
+  \item le circuit se réduit à un point donc la position relative des éléments du circuit n'a pas d'importance
+  \item \alert{Objet du cours de Circuits électriques}
+  \end{itemize}
+  \item Autrement : circuit distribué
+  \begin{itemize}
+    \item propagation des ondes ELM le long du circuit
+    \item dimensions physiques du circuit doivent être prises en compte
+    \item voir le cours d'Electromagnétisme
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Première loi de Kirchhoff (PLK) ou loi des courants}
+\alert{Pour tout circuit localisé, la somme algébrique des courants de toutes les branches partant d’un nœud est nulle à tout instant.
+}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+  $$\sum_{b \in \mathcal{N}} i_b(t)=0 $$  
+  \end{column}
+  \begin{column}{0.45\textwidth}
+  \includegraphics[width=0.5\textwidth]{images/PLK.png} 
+  \end{column}
+
+\end{columns}
+
+
+Cette loi exprime le principe de la conservation de la charge dans le cadre des circuits localisés.
+
+(Justification de la PLK sur base des lois de Maxwell, voir notes de cours.)
+
+\end{frame}
+
+
+
+\begin{frame}{Exemple de la PLK}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{images/circuit_PLK.png}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{tabular}{l r r }
+      Noeud a :& $-i_1-i_2    -i_4=0$          & (1)\\
+      Noeud b :& $     i_2+i_3    +i_5=0$       & (2)\\
+      Noeud c :& $i_1             -i_5  +i_6=0$ & (3)\\
+      Noeud d :& $        -i_3+i_4      -i_6=0$ & (4)
+    \end{tabular}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Extension de la PLK à une coupe}
+La PLK est applicable aux circuits localisés pour toute surface fermée $S$ ! 
+
+Pour le circuit précédent, on remarque que
+$$
+\text { (2) }+ \text { (3) } \Longrightarrow i_1+i_2+i_3+i_6=0
+$$
+
+Cela correspond à la somme des courants interceptés par la surface $S=$ coupe.
+
+Extension de la PLK: la somme algébrique des courants de toutes les branches d'une \alert{coupe} est nulle à tout instant.
+\end{frame}
+
+\begin{frame}{Seconde loi de Kirchhoff  (SLK) : Loi des tensions
+}
+\alert{Pour tout circuit localisé, la somme algébrique des tensions aux bornes de toutes les branches constituant une maille est nulle à tout instant.
+}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+  $$\sum_{b \in \mathcal{M}} u_b(t)=0 $$  
+  \end{column}
+  \begin{column}{0.45\textwidth}
+  \includegraphics[width=0.5\textwidth]{images/circuit_SLK.png} 
+  \end{column}
+
+\end{columns}
+\begin{itemize}
+  \item Cette loi découle de l’identité entre d.d.p. et tension dans le cadre des circuits localisés.
+  \item Une maille est un chemin fermé constitué des branches rencontrées lorsque, partant d’un nœud, on y revient.
+\end{itemize}
+
+(Justification de la SLK sur base des lois de Maxwell, voir notes de cours.)
+
+\end{frame}
+
+\begin{frame} {Application de la SLK}
+
+  \begin{enumerate}
+    \item Fixer un sens de référence pour les d.d.p. aux bornes des éléments des branches de la maille.
+    \item Fixer arbitrairement un sens de circulation de la maille.
+    \item Appliquer $\sum_{b \in \mathcal{M}} u_{b(t)}=0$ en
+    \begin{itemize}
+      \item partant d'un point "neutre" du circuit (c'est-à-dire situé à l'extérieur de ses éléments localisés),
+      \item parcourant la maille dans le sens de circulation choisi
+      \item comptant positivement la d.d.p. aux bornes des éléments chaque fois que l'on rencontre d'abord la borne " - ", négativement dans le cas contraire
+    \end{itemize}
+  \end{enumerate}
+
+  
+
+\end{frame}
+
+\begin{frame}{Exemple de la SLK}
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{images/circuit_SLK_2.png}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \begin{tabular}{l r r }
+      Maille I :& $-u_4 + u_2 -u_3 = 0$          & (1)\\
+      Maille II :& $ u_3 -u_5 -u_6 = 0 $       & (2)\\
+      Maille III :& $-u_2 + u_1 + u_5 = 0$ & (3)\\
+      ... :&  & 
+    \end{tabular}
+  \end{column}
+\end{columns}
+Pouvez-vous trouver d'autres relations ? Sont-elles linéairement indépendantes des 3 premières ? 
+\end{frame}
+
+
+\section{La loi d'Ohm}
+
+\begin{frame}{Exemple : une résistance dans une branche du circuit}
+  \centering 
+  \includegraphics[width=0.4\textwidth]{images/R_dans_circuit.png}
+\end{frame}
+
+
+\begin{frame}{Loi d’Ohm}
+\begin{columns}
+  \begin{column}{0.75\textwidth}
+  Loi d'Ohm \alert{locale} (en régime stationnaire): $\quad \vec{J}=\sigma \vec{E}$, \\où $\sigma$ est la conductivité électrique du conducteur.
+
+ \vspace{\baselineskip} 
+Loi d'Ohm \alert{globale} : Soit un conducteur de section constante $S$ et de longueur $\ell$ parcouru par un courant continu $I$ :
+ \includegraphics[width=0.4\textwidth]{images/R_schema.png}
+ $ U=V_A-V_B=\int_A^B \vec{E} \cdot \overrightarrow{d \ell}=R I$
+
+ \vspace{\baselineskip}
+Pour relier les paramètre de l'objet à sa résistance : $$R=\frac{\ell}{\sigma S}$$
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \includegraphics[width=\textwidth]{images/Ohm.png} \\
+    \centering
+    \tiny \textit{Georg Ohm,  1789-1854}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Résistance}
+\begin{columns}
+  \begin{column}{0.75\textwidth}
+  
+  Une résistance est un dipôle qui, parcouru par un courant, fait naître à ses bornes une d.d.p. fonction de ce courant
+  $$
+  u(t)=R i(t)
+  $$
+
+  En toute généralité : $R=f(u, i, t)$ est la résistance de l'élément. \\ $R$ s'exprime en Ohm ( $\Omega$ )
+  \begin{itemize}
+    \item $R=f(u, i)$ : résistance autonome ou invariante les caractéristiques de l'élément ne dépendent pas du temps
+    \item $R=f(t)$ : résistance linéaire
+    \item $R=\mathrm{constante}$ : résistance linéaire et invariante
+  \end{itemize}
+  \end{column}
+  \begin{column}{0.2\textwidth}
+    \centering
+    \includegraphics[width=0.5 \textwidth]{images/R_symbol.png}
+    \includegraphics[width=\textwidth]{images/R_NL.png}
+    \includegraphics[width=\textwidth]{images/R_linéaire.png}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} {Conductance}
+
+  On appelle conductance l’inverse de la résistance
+
+  $$i = \frac{1}{R} u = G u $$
+
+  $G$ s’exprime en Siemens (S).
+\end{frame}
+
+\section{Les sources indépendantes d'énergie}
+\begin{frame}{Exemple : une source de tension dans une branche}
+  \centering 
+  \includegraphics[width=0.6\textwidth]{images/sources.png}
+\end{frame}
+
+\begin{frame}{Qu'est ce qu'une source d'énergie électrique ?}
+Une source électrique est un composant capable de réaliser une conversion d'énergie de nature non électrique vers de l'énergie électrique
+\begin{itemize}
+  \item batterie : énergie chimique $\rightarrow$ énergie électrique
+  \item dynamo : énergie mécanique $\rightarrow$ énergie électrique
+  \item centrale électrique :
+  \begin{itemize}
+    \item énergie thermique $\rightarrow$ énergie mécanique $\rightarrow$ énergie électrique
+    \item énergie nucléaire $\rightarrow$ énergie mécanique $\rightarrow$ énergie électrique
+    \item énergie éolienne $\rightarrow$ énergie mécanique $\rightarrow$ énergie électrique
+  \end{itemize}
+  \item ...
+\end{itemize}
+
+Représentation en théorie des circuit par un modèle (plus ou moins réaliste).
+
+\`A la base de ces modèles, les \alert{sources \underline{idéales} de tension et de courant}.
+
+\end{frame}
+
+
+\begin{frame} {Source idéale de tension}
+
+  \begin{columns}
+  \begin{column}{0.8\textwidth}
+  Dipôle qui a la propriété de présenter à ses bornes une d.d.p. $v_s(t)$ \alert{indépendante} du courant qui le parcourt.
+  \end{column}
+  \begin{column}{0.15\textwidth}
+  \includegraphics[width=\textwidth]{images/source_ideale_tension.png}
+  \end{column}
+  \end{columns}
+\vspace{\baselineskip}
+
+
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+  \includegraphics[width=\textwidth]{images/ex_source_ideale_tension.png}
+  \end{column}
+  \begin{column}{0.65\textwidth}
+La d.d.p. aux bornes de cet élément est \alert{indépendante} de la charge qui y est connectée :
+$$
+\begin{aligned}
+v_{R_L} & =v_s \ \forall R_L \neq 0 \ (\text{court-circuit}) \\
+i & =\frac{v_s}{R_L}=G_L v_s
+\end{aligned}
+$$
+  \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame} {Source idéale de courant}
+
+  \begin{columns}
+  \begin{column}{0.8\textwidth}
+  Dipôle qui a la propriété de débiter un courant dont l'intensité $i_s(t)$ est \alert{indépendante} de la d.d.p. à ses bornes.
+  \end{column}
+  \begin{column}{0.15\textwidth}
+  \includegraphics[width=\textwidth]{images/source_ideale_courant.png}
+  \end{column}
+\end{columns}
+\vspace{\baselineskip}
+\begin{columns}
+  \begin{column}{0.3\textwidth}
+  \includegraphics[width=\textwidth]{images/ex_source_ideale_courant.png}
+  \end{column}
+  \begin{column}{0.65\textwidth}
+    Le courant débité par cet élément est \alert{indépendant} de la charge qui y est connectée : 
+$$
+\begin{aligned}
+i & =i_s \ \forall R_L \neq \infty \  (\text{circuit ouvert }) \\
+v_{R_L} & =R_L i_s
+\end{aligned}
+$$
+  \end{column}
+\end{columns}
+
+
+
+\end{frame}
+
+\begin{frame} {Exemples}
+
+Les éléments physiques réels ne se comportent pas rigoureusement comme le modèle idéal.
+La principale source d'imperfection est la \alert{résistance interne}.
+
+Selon la nature du signal généré, on distingue:
+\begin{itemize}
+  \item source continue : $v_s$ ou $i_s=\text{constante}$.  Exemple : batterie (ou pile)
+  \item source sinusoïdale : $v_s$ ou $i_s=A \sin (\omega t)$
+  \item source quelconque : $v_s$ ou $i_s=f(t)$
+\end{itemize}
+  
+Les sources indépendantes constituent, en termes de la théorie des systèmes, les \alert{excitations} (cf. les forces extérieures en mécanique).
+
+\end{frame}
+
+

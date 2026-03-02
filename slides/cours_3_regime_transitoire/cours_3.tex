@@ -1,0 +1,141 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Document metadata
+
+\subtitle{\Large ELEC0053 - Circuits électriques}
+\title{\Large Régimes transitoires}
+\author[BC]{Bertrand Cornélusse}
+\institute{Université de Liège}
+\date{\today}
+
+% Image for the title page (use include graphics option to properly size/place it)
+\titlegraphic{\includegraphics[height=\paperheight]{banner.jpg}}
+\usetheme[titlestyle=style1]{trigon}
+%\usetheme[sectionstyle=style2]{trigon}
+
+% Define logos to use (comment if no logo)
+\biglogo{uliege_faculte_sciencesappliquees_logo_rvb_pos.pdf} % Used on titlepage only
+\smalllogo{} % Used on top right corner of regular frames
+
+% ------ If you want to change the theme default colors, do it here ------
+%\definecolor{tPrim}{HTML}{00843B}   % Green
+%\definecolor{tSec}{HTML}{289B38}    % Green light
+%\definecolor{tAccent}{HTML}{F07F3C} % Orange
+
+% ------ Packages and definitions used for this demo. Can be removed ------
+\usepackage{appendixnumberbeamer} % To use \appendix command
+\pdfstringdefDisableCommands{% Fix hyperref translate warning with \appendix
+\def\translate#1{#1}%
+}
+\usepackage{pgf-pie} % For pie charts
+\usepackage{caption} % For subfigures
+\usepackage{subcaption} % For subfigures
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{trigon}}\xspace}
+\usepackage[scale=2]{ccicons} % Icons for CC-BY-SA
+\usepackage{booktabs} % Better tables
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocodex}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{blox}
+\usepackage{calc}
+%\usetikzlibrary{arrows.meta, positioning}
+
+
+\newcommand{\Z}       {\mathbb{Z} }
+\newcommand{\R}       {\mathbb{R} }
+\newcommand{\Q}       {\mathbb{Q} }
+\newcommand{\N}       {\mathbb{N} }
+\newcommand{\spa}     {\text{span}}
+\newcommand{\lin}     {\text{span}}
+\newcommand{\inter}   {\text{int} }
+\newcommand{\st}{\mathrm{s.t.}}
+\definecolor{myRed}{RGB}{209,34,57} 
+
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+		language=Python,
+		basicstyle=\ttm,
+		otherkeywords={self},             % Add keywords here
+		keywordstyle=\ttb\color{deepblue},
+		emph={MyClass,__init__},          % Custom highlighting
+		commentstyle=\color{lg},
+		emphstyle=\ttb\color{deepred},    % Custom highlighting style
+		stringstyle=\color{deepgreen},
+		frame=tb,                         % Any extra options here
+		showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+	\pythonstyle
+	\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+		\pythonstyle
+		\lstinputlisting[#1]{#2}}}
+
+
+
+\usepackage{tikz}
+\usepackage[americanresistors,americaninductors,siunitx]{circuitikz}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{pgfplots}
+\input{phasor.tex}
+
+\newcommand{\mymotor}[2] % #1 = name , #2 = rotation angle
+{\draw[thick,rotate=#2] (#1) circle (10pt)
+	node[]{$\mathsf M$} 
+	++(-12pt,3pt)--++(0,-6pt) --++(2.5pt,0) ++(-2.8pt,6pt)-- ++(2.5pt,0pt);
+	\draw[thick,rotate=#2] (#1) ++(12pt,3pt)--++(0,-6pt) --++(-2.5pt,0) ++(2.8pt,6pt)-- ++(-2.5pt,0pt);
+}
+
+\newcommand{\mymotorB}[1] % #1 = name 
+{\draw[thick] (#1) circle (12pt)
+	node[above=-3pt]{$\mathsf M$} ++(-8pt,-3pt)--++(15pt,0);
+	\draw[thick,dashed] (#1) ++(-8pt,-5pt)--++(15pt,0);
+}
+
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{8}  % for normal
+
+%==============================================================================
+%                               BEGIN DOCUMENT
+%==============================================================================
+\begin{document}
+
+\input{content}
+
+%\begin{frame}[allowframebreaks]{References}
+%    \bibliographystyle{ieeetr}
+%        \bibliography{demo}
+%\end{frame}
+
+
+\end{document}
+
+
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+  
+  \end{column}
+  \begin{column}{0.45\textwidth}
+
+  \end{column}
+\end{columns}
