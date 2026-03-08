@@ -112,3 +112,4 @@ ELECenv/
 *.synctex.gz
 *.bbl
 *.toc
+slides/.DS_Store

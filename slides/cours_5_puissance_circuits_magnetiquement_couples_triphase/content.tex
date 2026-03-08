@@ -817,6 +817,43 @@ La valeur efficace du courant est donc $I_{eff} \approx 6,98 \, \text{A}$.
 
 %---------------------------------------------------------------------
 
+\begin{frame}[allowframebreaks]{Exemple : tag RFID}
+
+
+\begin{columns}
+  \begin{column}{0.45\textwidth}
+	Un système de radio-identification est composé de deux entités qui communiquent entre elles :
+	\begin{itemize}
+		\item un transpondeur ou radio-étiquette qui comporte un code permettant d'identifier un objet (ou autre)
+		\item un émetteur-lecteur qui alimente le transpondeur et lit son code
+	\end{itemize}  
+  \end{column}
+  \begin{column}{0.45\textwidth}
+	\includegraphics[width=\textwidth]{Sistema-Rfid-Onidentity.jpeg}
+  \end{column}
+\end{columns}
+
+\begin{block}{Illustration : \href{https://everycircuit.com/circuit/5611864725782528/passive-rfid}{\alert{\underline{Lien vers le circuit d'exemple}}}}
+	\begin{itemize}
+		\item Où est l'émetteur ? 
+		\item Où est le tag ?
+		\item Quel est le signal qui devrait être interprété par le lecteur ?
+		\item Quelle est la fréquence de résonance du tag ? 	
+		\item Quel composant contient le code du tag ?
+		\item Quelle partie du tag est son auto-alimentation?
+		\item A quoi servent les transistors ?
+		\item Quel est l'impact du coefficient de couplage ?  
+	\end{itemize}
+\end{block}
+
+
+\end{frame}
+
+\begin{frame}{Exercice}
+	Résoudre exercice 4.9
+\end{frame}
+
+
 \subsection{Le transformateur et le transformateur idéal}
 \begin{frame}{Le transformateur}
 	
@@ -927,9 +964,9 @@ Soit $w(t)$ l'énergie emmagasinée dans un élément d'un circuit à un instant
 
 
 
-\section{Circuits triphasés équilibrés}
+\section{Circuits triphasés}
 	
-\begin{frame}{Introduction}
+\begin{frame}[allowframebreaks]{Introduction}
 	Le transport et la distribution de l'énergie électrique sont réalisés au moyen
 	de systèmes triphasés fonctionnant en régime sinusoïdal, à l'exception
 	de quelques liaisons haute tension à courant continu.
@@ -956,42 +993,44 @@ Soit $w(t)$ l'énergie emmagasinée dans un élément d'un circuit à un instant
 	\end{itemize}
 \end{frame}
 
-
 \begin{frame}{Principe}
-	
-	Un circuit \textbf{triphasé} est constitué de trois circuits appelés {\em phases}. 
-	
-	\vfill
-	
-	Un système est \textbf{équilibré} si tous ses constituants le sont.
-	
-	\vfill 
-	
-	Eléments triphasés : 
+	\centering
+	\includegraphics[width=0.8\linewidth]{principe_3phase}
+\end{frame}
+
+
+\begin{frame}{Circuit constitué de trois circuits appelés {\em phases} $a$, $b$ et $c$ }
+	\centering
+	\includegraphics[width=0.8\linewidth]{principe_3phase_phases}
+\end{frame}
+
+\begin{frame}{Production $\rightarrow$ transport $\rightarrow$ consommation} 
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{principe_3phase_production_transport_charge.pdf}
+	\end{center}
+\end{frame}
+\begin{frame}{Production $\rightarrow$ transport $\rightarrow$ consommation} 
 	\begin{itemize}
-		\item générateur : circuit à 3 accès qui délivre 3 f.e.m, équilibré si
+		\item \textbf{générateur} : circuit à 3 accès qui délivre 3 f.e.m, équilibré si
 		les f.e.m sont égales en amplitude et déphasées temporellement
 		entre elles d'un tiers de période et si chaque phase présente une
 		impédance interne identique;
-		\item charge : circuit à 3 accès, équilibré si chaque phase est
+		\item \textbf{charge} : circuit à 3 accès, équilibré si chaque phase est
 		constituée d'une impédance identique;
-		\item circuit de transmission : relie la charge au générateur,
+		\item \textbf{circuit de transmission} : relie la charge au générateur,
 		équilibré si chaque phase possède une impédance identique.
 	\end{itemize}
+
+	Un système est dit \textbf{équilibré} si tous ses constituants le sont.
 \end{frame}
 
 
-\begin{frame}{}
-\begin{center}
-\includegraphics[width=1\linewidth]{principe_3phase}
-\end{center}
-\end{frame}
 
 
 \begin{frame}{Générateur triphasé équilibré}
 	
 	\begin{columns}
-		\begin{column}{0.5\linewidth}		
+		\begin{column}{0.45\linewidth}		
 		\begin{center}
 		\includegraphics[width=0.8\linewidth]{3phase_gen}
 		\end{center}
@@ -1012,7 +1051,7 @@ Soit $w(t)$ l'énergie emmagasinée dans un élément d'un circuit à un instant
 \end{frame}
 
 
-\begin{frame}{Tensions et courants triphasés équilibrés}
+\begin{frame}[allowframebreaks]{Tensions et courants triphasés équilibrés}
 	
 	Si le système est équilibré, tous les courants et tensions
 	correspondants dans les 3 phases sont égaux en amplitude et décalés
@@ -1042,10 +1081,7 @@ Soit $w(t)$ l'énergie emmagasinée dans un élément d'un circuit à un instant
 	passer les vecteurs tournants dans l'ordre a,b,c.
 	
 	Autre sens = séquence inverse. 
-\end{frame}
 
-
-\begin{frame}{}
 \begin{columns}
 	\begin{column}{0.3\linewidth}
 		\begin{center}
@@ -1072,15 +1108,19 @@ Soit $w(t)$ l'énergie emmagasinée dans un élément d'un circuit à un instant
 
 \subsection{Montage en étoile}
 \begin{frame}{Montage en étoile}
+	\begin{columns}
+  \begin{column}{0.6\textwidth}
 	\begin{center}
-	\includegraphics[width=.8\linewidth]{principe_3phase}
+	\includegraphics[width=\linewidth]{principe_3phase}
 	\end{center}
-	
+  \end{column}
+  \begin{column}{0.35\textwidth}
 	Le courant dans le conducteur  reliant les {\em neutres  N et
 		N$^{'}$}  est :
-	\[\bar{I}_a+\bar{I}_b+\bar{I}_c=0\]
-	
+	\[\bar{I}_a+\bar{I}_b+\bar{I}_c=0\]	
 	En régime parfaitement équilibré, tous les neutres sont au même potentiel.
+  \end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Tension de phase et tension de ligne}
@@ -1119,22 +1159,31 @@ Dans un montage en étoile, on dispose de deux tensions.
 
 Distribution domestique :
 \begin{itemize}
-	\item tension de phase : 220 V (tension phase-neutre)
-	\item tension de ligne : 380 V
+	\item tension de phase : 230 V (tension phase-neutre)
+	\item tension de ligne : 400 V
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Mise à la terre des  neutres}
-	
-	En régime équilibré, le courant dans le conducteur de neutre est nul
+	\begin{columns}
+  \begin{column}{0.35\textwidth}
+  	En régime équilibré, le courant dans le conducteur de neutre est nul
 	$\rightarrow$ on peut supprimer ce conducteur.
-	\begin{center}
-	\includegraphics[width=0.7\linewidth]{3phase_grounding}	
-	\end{center}
+
+	\vspace{\baselineskip}
 	
-	En pratique, il existe toujours un léger déséquilibre entre les
-	phases et on connecte les neutres à la terre. 
+	\textbf{En pratique}, il existe toujours un léger déséquilibre entre les
+	phases et \textbf{on connecte les neutres à la terre}. 
+  \end{column}
+  \begin{column}{0.6\textwidth}
+	\begin{center}
+	\includegraphics[width=\linewidth]{3phase_grounding}	
+	\end{center}
+  \end{column}
+\end{columns}
+	
+
 \end{frame}
 
 \begin{frame}{Avantages}
@@ -1184,7 +1233,7 @@ Distribution domestique :
 \end{frame}
 
 
-\begin{frame}{}
+\begin{frame}{Si tout est équilibré}
 	\begin{columns}
 		\begin{column}{0.5\linewidth}
 			\begin{eqnarray*}
@@ -1206,7 +1255,7 @@ Distribution domestique :
 
 
 \subsection{Puissances}
-\begin{frame}{Montage étoile}
+\begin{frame}[allowframebreaks]{Montage étoile}
 	
 	Puissance instantanée fournie à une charge triphasée connectée en
 	étoile :
@@ -1225,11 +1274,7 @@ Distribution domestique :
 		\end{eqnarray*}}
 		$p_{3\phi}(t)$ est constante !\\
 		$p_{3\phi}(t)$ = 3 x la P active consommée par l'impédance $Z_L$  d'une des phases.
-\end{frame}
-	
-	%------------------------------------------------------------------------
 
-\begin{frame}{}
 	Puissance complexe triphasée fournie à une charge triphasée connectée en
 	étoile~:
 	{\small \begin{eqnarray*}
@@ -1251,7 +1296,7 @@ Distribution domestique :
 		
 		%------------------------------------------------------------------------
 		
-\begin{frame}{Montage triangle}
+\begin{frame}[allowframebreaks]{Montage triangle}
 	
 	Puissance instantanée fournie à une charge triphasée connectée en
 	triangle :
@@ -1275,11 +1320,8 @@ Distribution domestique :
 				\end{eqnarray*}}
 		\end{column}
 	\end{columns}
-\end{frame}
-		
-				%------------------------------------------------------------------------
 
-\begin{frame}{}
+
 	Etoile :
 	{\small \begin{eqnarray*}
 			P_{3\phi}& =& 3VI\cos(\phi_u-\phi_i)= \sqrt{3}UI\cos(\phi_u-\phi_i)\\
