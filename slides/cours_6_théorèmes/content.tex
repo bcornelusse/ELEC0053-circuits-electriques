@@ -1,47 +1,22 @@
-% !TeX spellcheck = fr_FR
-\input{OD_config.tex}
+%--------------------------------------
+% Create title frame
+\titleframe
 
-\usepackage{tikz}
 
-\title{\textbf{} ELEC0053 Circuits électriques \\[2mm] --- \\[2mm] Théorèmes fondamentaux}
-\author{Bertrand Corn\'elusse}
 
-\usepackage{tikz}
-\usepackage[americanresistors,americaninductors,siunitx]{circuitikz}
-\usepackage{mathtools}
-\usepackage{url}
-\usepackage{pgfplots}
-\input{phasor.tex}
 
-\newcommand{\mymotor}[2] % #1 = name , #2 = rotation angle
-{\draw[thick,rotate=#2] (#1) circle (10pt)
-	node[]{$\mathsf M$} 
-	++(-12pt,3pt)--++(0,-6pt) --++(2.5pt,0) ++(-2.8pt,6pt)-- ++(2.5pt,0pt);
-	\draw[thick,rotate=#2] (#1) ++(12pt,3pt)--++(0,-6pt) --++(-2.5pt,0) ++(2.8pt,6pt)-- ++(-2.5pt,0pt);
-}
 
-\newcommand{\mymotorB}[1] % #1 = name 
-{\draw[thick] (#1) circle (12pt)
-	node[above=-3pt]{$\mathsf M$} ++(-8pt,-3pt)--++(15pt,0);
-	\draw[thick,dashed] (#1) ++(-8pt,-5pt)--++(15pt,0);
-}
-
-\begin{document}
-\begin{frame}
-  \titlepage
-\end{frame}
-
+%--------------------------------------
 
 \begin{frame}{Qu'allons nous faire dans ce cours ?}
 	
 	Ce chapitre est consacré aux principaux théorèmes régissant les circuits électriques étudiés dans ce cours, afin notamment de comprendre 
-	\pause
+	
 	\begin{itemize}
 		\item l'\textbf{impact de plusieurs excitations} agissant simultanément: \textbf{superposition}
 		\item comment \textbf{simplifier un circuit}: Thévenin / Norton.
 	\end{itemize}
 	
-	\pause
 	\vfill 
 	
 	Ce chapitre se limite au régime en courant continu établi. 
@@ -50,21 +25,18 @@
 	\end{itemize}
 	
 	\vfill 
-	\pause
 	\textbf{Dans le syllabus : le chapitre 5.}
+
+	Exercices que vous serez capables de résoudre : tous les exercices du chapitre 5.
+
 	
 \end{frame}
 
-\begin{frame}{Exercices que vous devez être capables de résoudre à l'issue de ce cours }
-
-Tous les exercices du chapitre 5.
-
-\end{frame}
-
-
-
+%--------------------------------------
+% Table of contents
 \begin{frame}{Plan du cours}
-	\tableofcontents
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
 \end{frame}
 
 %-------------------------------------------------------------------------------
@@ -86,31 +58,41 @@ Tous les exercices du chapitre 5.
 
 
 \section{Théorème de substitution}
+
+\begin{frame}{Question :}
+
+\textit{	Peut-on remplacer une résistance par une source d'énergie sans changer l'état du système ? 
+}	\begin{center}
+		\alert{\href{https://everycircuit.com/circuit/6248149735833600}{Exemple dans EveryCircuit}}
+	\end{center}
+
+	\pause 
+
+	\textbf{Réponse : oui dans beaucoup de cas.}
+	\begin{center}
+		\includegraphics[height=3.5cm]{figs/theoremes/substitution_1}
+		\includegraphics[height=3.5cm]{figs/theoremes/substitution_2}
+		\includegraphics[height=3.5cm]{figs/theoremes/substitution_3}\\
+		
+	\end{center}	
+\end{frame}
+
 \begin{frame}{Théorème de substitution}
 
 \begin{block}{\'Enoncé}
-\pause[1]
 Soit un réseau comportant un certain nombre de sources indépendantes d'énergie et
 soumis à des conditions initiales déterminées. Supposons que ce réseau possède une solution unique, fonction des signaux délivrés par ces sources et conditions initiales. Remplaçons une de ses branches, supposée non couplée avec les autres, 
 \begin{itemize}
-	\pause[2]
 	\item soit par un générateur idéal de tension dont la f.e.m. est égale à la tension de la branche préexistante.
-	\pause[3]
 	\item soit par un injecteur idéal de courant dont le courant est égal à celui parcourant la branche préexistante
 \end{itemize}
-\pause[4]
+
 \textbf{Le théorème de substitution affirme que la solution du réseau ainsi modifié sera identique à celle du réseau initial.}
 \end{block}
-\begin{center}
-\pause[1]
-\includegraphics[height=3cm]{figs/theoremes/substitution_1}
-\pause[2]
-\includegraphics[height=3cm]{figs/theoremes/substitution_2}
-\pause[3]
-\includegraphics[height=3cm]{figs/theoremes/substitution_3}
-\end{center}
 
 \end{frame}
+
+
 
 
 \begin{frame}{Validité, applications}
@@ -126,11 +108,28 @@ dégénérés), il peut également s'appliquer aux réseaux non-linéaires rempl
 
 
 \section{Théorème de superposition}
+\begin{frame}{Question :}
+
+\textit{Quel est l'impact des différentes sources d'énergie sur les potentiels aux n{\oe}uds et les courants dans les lignes ?
+}
+
+\begin{center}
+		\alert{\href{https://everycircuit.com/circuit/5979110635601920}{Exemple dans EveryCircuit }}
+\end{center}
+\pause
+\textbf{Réponse :} 
+\vspace*{-0.2cm}
+\begin{center}
+		\includegraphics[width=0.8\linewidth]{figs/theoremes/superposition_ex.pdf}\\
+\end{center}
+\end{frame}
+
+
 \begin{frame}{Théorème de superposition}
 
 \begin{block}{\'Enoncé}
 Soit un réseau linéaire, initialement relaxé et possédant un certain nombre de sources
-indépendantes d'énergie. La réponse de ce réseau à toutes les excitations agissant simultanément est égale à la somme des réponses obtenues lorsque chacune d'elles agit seule
+indépendantes d'énergie. \textbf{La réponse} de ce réseau \textbf{à toutes les excitations} agissant simultanément \textbf{est égale à la somme des réponses} obtenues lorsque chacune d'elles agit seule
 (les autres excitations ayant été éliminées). 
 \end{block}
 \vfill
@@ -148,16 +147,22 @@ Le théorème de superposition est valable pour tout circuit à \textbf{élémen
 des relations fournies par les lois de Kirchhoff et des relations $u$ -- $i$ de ses branches.
 \end{frame}
 
-\begin{frame}{Illustration du théorème de superposition}
-	
-\begin{center}
-		\includegraphics[width=0.8\linewidth]{figs/theoremes/superposition_illu}
-\end{center}
-\end{frame}
 
 
 \section{Théorème de Thévenin}
-\begin{frame}{Théorème de Thévenin}
+\begin{frame}{Question :}
+\textit{Peut-on trouver \textbf{un équivalent} "simple" au circuit ci-dessous, tel qu'il se comportera de la même manière quelle que soit le circuit connecté à \textbf{l'accès} $(a, b)$ ?}
+\begin{center}
+	\includegraphics[width=0.6\textwidth]{figs/theoremes/exemple_th.pdf}\\
+	\alert{\href{https://everycircuit.com/circuit/5077285782814720}{Exemple sur EveryCircuit}}
+\end{center}
+
+
+	
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Théorème de Thévenin}
 
 \begin{block}{\'Enoncé}
 Tout réseau $\mathcal{R}$ linéaire, initialement relaxé et vu d'un accès peut être remplacé par
@@ -173,7 +178,7 @@ avec le dipôle $R_{Th}$ où :
 La charge connectée aux bornes de la "source équivalente de Thévenin" ainsi définie est supposée dépourvue de couplages avec $\mathcal{R}$.
 
 \begin{center}
-	\includegraphics[width=0.7\linewidth]{figs/theoremes/thevenin}
+	\includegraphics[width=0.8\linewidth]{figs/theoremes/thevenin}
 \end{center}
 \end{frame}
 
@@ -196,16 +201,22 @@ On a
 	i_L &= i_L + 0
 \end{align*}
 \begin{center}
-	\includegraphics[width=0.9\linewidth]{figs/theoremes/th2}
+	\includegraphics[width=0.6\linewidth]{figs/theoremes/th2}
 \end{center}
 \end{frame}
 
 \begin{frame}{Démonstration - étape 3}
+\begin{columns}
+\begin{column}{0.45\textwidth}
 On dérive le schéma équivalent de Thévenin.
 On a $$u_L = u_1 + v_{Th}$$
+\end{column}
+\begin{column}{0.5\textwidth}
 \begin{center}
-\includegraphics[width=0.5\linewidth]{figs/theoremes/th3}
+\includegraphics[width=0.9\linewidth]{figs/theoremes/th3}
 \end{center}
+\end{column}
+\end{columns}
 Donc
 \begin{itemize}
 	\item $v_{Th} = u_{co}$ est la tension apparaissant aux bornes du circuit à vide, c-à-d lorsque l'accès est laissé ouvert
@@ -217,6 +228,7 @@ Donc
 \begin{frame}{Détermination des paramètres $v_{Th}$ et $R_{Th}$}
 
 \begin{block}{Détermination de $v_{Th}$ et $R_{Th}$}
+	\small
 Pour déterminer $v_{Th}$, il suffit de déterminer la d.d.p aux  bornes du circuit à vide, i.e. lorsqu'aucune charge n'y est connectée.
 \vfill
 Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
@@ -236,23 +248,32 @@ Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
 
 \begin{frame} {Exemple : résistances linéaires et sources indépendantes}
 	
-	Déterminons le schéma équivalent de Thévenin du circuit :
-	\begin{center}
-		\includegraphics[width=0.6\linewidth]{figs/theoremes/ex_Th_1}
-	\end{center}
-	$v_{Th}$ est la tension à vide à l'accès, donc, comme le courant dans la résistance de $4\Omega$ est nul, 
-	\[v_{Th}=v_{3A}\] 
-	Par application de la PLK, on a 
-	$$\frac{v_{Th}-25}{5}+\frac{v_{Th}}{20}-3=0 $$
-	et donc $v_{Th}=32 \, \text{V}$
+	\begin{columns}
+	\begin{column}{0.45\textwidth}
+		Déterminons le schéma équivalent de Thévenin du circuit :
+		\begin{center}
+			\includegraphics[width=\linewidth]{figs/theoremes/ex_Th_1}
+		\end{center}  
+	\end{column}
+	\begin{column}{0.45\textwidth}
+		$v_{Th}$ est la tension à vide à l'accès, donc, comme le courant dans la résistance de $4 \Omega$ est nul, 
+		\[v_{Th}=v_{3A}\] 
+		Par application de la PLK, on a 
+		$$\frac{v_{Th}-25}{5}+\frac{v_{Th}}{20}-3=0 $$
+		et donc $v_{Th}=32 \, \text{V}$
+    \end{column}
+	\end{columns}
 \end{frame}
 	
 \begin{frame} {Exemple : ...}
-		
+		\begin{columns}
+  \begin{column}{0.5\textwidth}
 	On détermine ensuite $R_{Th}$ par essai en court-circuit et donc le calcul de $i_{cc}$ :
 	\begin{center}
-		\includegraphics[width=0.6\linewidth]{figs/theoremes/ex_Th_2}
-	\end{center}
+		\includegraphics[width=\linewidth]{figs/theoremes/ex_Th_2}
+	\end{center}  
+  \end{column}
+  \begin{column}{0.4\textwidth}
 	Par la PLK,
 	$$\frac{v_{3A}-25}{5}+\frac{v_{3A}}{20}-3 +
 	\frac{v_{3A}}{4}=0 $$
@@ -262,26 +283,40 @@ Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
 	$$i_{cc}=\frac{16}{4}=4 \,\text{A}.$$
 	Finalement, 
 	$$ R_{Th}=\frac{v_{Th}}{i_{cc}}=8\, \Omega.$$
+  \end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame} {Exemple : Détermination de $R_{Th}$ par passification et réduction}
+\begin{frame} {\Large Exemple : Détermination de $R_{Th}$ par passification et réduction}
+	\begin{columns}
+  \begin{column}{0.6\textwidth}
 	Le circuit de l'exemple précédent ne comporte que des résistances et aucune source commandée. 
 	Dans ce cas, il est plus simple de rechercher la résistance équivalente du circuit passifié
 	\begin{center}
-		\includegraphics[width=0.5\linewidth]{figs/theoremes/ex_Th_3}
-	\end{center}
+		\includegraphics[width=0.8\linewidth]{figs/theoremes/ex_Th_3}
+	\end{center}  
+  \end{column}
+  \begin{column}{0.38\textwidth}
 	Vue de l'accès, la résistance de $4 \,\Omega$ est en série avec la mise en parallèle des deux autres résistances : 
 	\[R_{eq}=4+\frac{20.5}{20+5}=8\, \Omega\]
+  \end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Applications}
 	Le théorème de Thévenin a de nombreuses applications aussi bien pratiques que théoriques. Par exemple on peut citer le problème de l'adaptation et les analyses de sensibilités.
 \end{frame}
 
-
+\begin{frame}{Question :}
+\textit{Dans le circuit ci-dessous, quelle valeur de résistance, connectée à l'accès $(a, b)$, consomme une puissance maximale ?}
+\begin{center}
+	\includegraphics[width=0.6\textwidth]{figs/theoremes/exemple_th.pdf}\\
+	\alert{\href{https://everycircuit.com/circuit/4629668619747328}{Exemple sur EveryCircuit}}
+\end{center}
+\end{frame}
 
 \subsection{Adaptation et transfert de puissance maximum}			
-	\begin{frame}{Adaptation et transfert de puissance maximum}
+	\begin{frame}[allowframebreaks]{Adaptation et transfert de puissance maximum}
 		
 		\begin{block}{Adaptation d'impédance}
 			\begin{columns}
@@ -297,12 +332,12 @@ Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
 		\vfill
 		On remplace le circuit par son schéma équivalent de Thévenin.
 		\begin{columns}
-			\begin{column}{0.58\linewidth}
-				\flushright
-				\includegraphics[width=0.7\linewidth]{adaptation_2}
-			\end{column}
 			\begin{column}{0.4\linewidth}
-				\begin{block}{}
+				\flushright
+				\includegraphics[width=\linewidth]{adaptation_2}
+			\end{column}
+			\begin{column}{0.5\linewidth}
+				\begin{block}{Condition d'adaptation}
 				$P_L$ max si
 				\[Z_L=Z_{Th}^*\]
 				\end{block}
@@ -357,17 +392,26 @@ Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
 	
 	%-----------------------------------------------------------------------------------
 	\begin{frame}{Caractéristiques de l'adaptation}
-		
-		\begin{enumerate}
-			\item Le courant délivré est en phase avec la source de Thévenin $$\bar{I}=\frac{\bar{V}_{Th}}{2R_L}$$\\
-			\item La source de Thévenin ne fournit pas de puissance réactive $$S_{s}=\bar{V}_{Th}\bar{I}^*=\frac{V_{Th}^2}{2R_L}= P_{s}$$
-			\item $50\%$ de la puissance est délivrée à la charge $Z_L$
-			\[P_{max}=R_LI^2=\frac{V_{Th}^2}{4R_L}=0.5P_{s}\]
-			\item La charge consomme (ou produit) de la puissance réactive: $Q_L=X_LI^2$.
-			\item Il y a une possibilité de surtension
-			\[U_L=|Z_L|I=|Z_L|\frac{V_{Th}}{2R_L}=\frac{V_{Th}}{2}\sqrt{1+\frac{X_L^2}{R_L^2}}
-			> V_{Th} \text{~si~}X_L>1.73R_L\]
-		\end{enumerate}				
+	
+	\begin{columns}
+  \begin{column}{0.35\textwidth}  
+	\begin{enumerate}
+		\item Le courant délivré est en phase avec la source de Thévenin $$\bar{I}=\frac{\bar{V}_{Th}}{2R_L}$$\\
+		\item La source de Thévenin ne fournit pas de puissance réactive $$S_{s}=\bar{V}_{Th}\bar{I}^*=\frac{V_{Th}^2}{2R_L}= P_{s}$$
+	\end{enumerate}				
+\end{column}
+\begin{column}{0.6\textwidth}
+	\begin{enumerate}
+		\setcounter{enumi}{2}
+	\item $50\%$ de la puissance est délivrée à la charge $Z_L$
+		\[P_{max}=R_LI^2=\frac{V_{Th}^2}{4R_L}=0.5P_{s}\]
+	\item La charge consomme (ou produit) de la puissance réactive: $Q_L=X_LI^2$.
+	\item Il y a une possibilité de surtension
+	\[U_L=|Z_L|I=|Z_L|\frac{V_{Th}}{2R_L}=\frac{V_{Th}}{2}\sqrt{1+\frac{X_L^2}{R_L^2}}
+	> V_{Th}\] si $X_L>1.73R_L$.
+	\end{enumerate}	
+  \end{column}
+\end{columns}
 	\end{frame}
 	
 	%-----------------------------------------------------------------------------------
@@ -392,7 +436,7 @@ Pour $R_{Th}$, on peut utiliser une des trois méthodes suivantes :
 
 
 \section{Théorème de Norton}
-\begin{frame} {Théorème de Norton}
+\begin{frame}[allowframebreaks]{Théorème de Norton}
 \begin{block}{\'Enoncé}
 Soit un circuit ${\cal R}$ résistif linéaire comportant un certain
 nombre de sources indépendantes de tension et de sources
@@ -434,22 +478,22 @@ Pour $G_{No}$, il y a trois possibilités :
 
 
 \section{Equivalence de source}
-\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+\begin{frame}{\Large Equivalence d'une source de tension et d'une source de courant}
 
 En appliquant le théorème de Thévenin à une source de courant en parallèle avec une résistance, on peut établir la relation d'équivalence suivante :
 \begin{center}
-	\includegraphics[width=0.9\linewidth]{figs/theoremes/Equiv_source_2}
+	\includegraphics[width=0.6\linewidth]{figs/theoremes/Equiv_source_2}
 \end{center}
 \end{frame}
-\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+\begin{frame}{\Large Equivalence d'une source de tension et d'une source de courant}
 
 De manière similaire, en appliquant le théorème de Norton à une source de tension en série avec une résistance, on peut établir la relation d'équivalence suivante :
 \begin{center}
-	\includegraphics[width=0.65\linewidth]{figs/theoremes/Equiv_source_1}
+	\includegraphics[width=0.6\linewidth]{figs/theoremes/Equiv_source_1}
 \end{center}
 \end{frame}
 
-\begin{frame}{Equivalence d'une source de tension et d'une source de courant}
+\begin{frame}{\Large Equivalence d'une source de tension et d'une source de courant}
 En résumé, il est important de retenir qu'on peut passer d'une représentation à l'autre si et seulement si
 \begin{eqnarray*}
 	G_{No} &= \frac{1}{R_{Th}} \\
@@ -458,13 +502,11 @@ En résumé, il est important de retenir qu'on peut passer d'une représentation
 \end{frame}
 
 
-\begin{frame} {Exemple : Equivalent de Thévenin par équivalence de source.}
+\begin{frame} {\Large Exemple : Equivalent de Thévenin par équivalence de source.}
 	En revenant à notre exemple, on voit qu'il est possible dans ce cas simple d'obtenir l'équivalent de Thévenin par équivalences de source successives : 
 	\begin{center}
-		\includegraphics[width=0.98\linewidth]{figs/theoremes/ex_eq_source}
+		\includegraphics[width=0.8\linewidth]{figs/theoremes/ex_eq_source}
 	\end{center}
 	
 \end{frame}
 
-
-\end{document}

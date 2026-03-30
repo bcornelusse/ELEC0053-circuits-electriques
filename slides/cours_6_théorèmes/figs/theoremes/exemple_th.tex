@@ -1,0 +1,48 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usepackage[american]{circuitikz}
+
+\begin{document}
+\begin{circuitikz}[scale=1]
+
+  % Noeuds principaux
+  % A = coin haut-gauche (après source de tension)
+  % B = noeud milieu-haut (entre 5Ω et 20Ω / 4Ω)
+  % C = noeud milieu-haut-droite (entre 4Ω et source de courant)
+  % D = coin haut-droite (borne +)
+  % E = coin bas-gauche
+  % F = noeud bas-milieu (sous 20Ω)
+  % G = noeud bas-droite (sous source de courant)
+  % H = coin bas-droite (borne -)
+
+  % Source de tension 25V (côté gauche, vertical)
+  \draw (0,0) to[V, v_=$25\,{V}$, invert] (0,3);
+
+  % Résistance 5Ω (haut, horizontal)
+  \draw (0,3) to[R, l=$5\,\Omega$] (3,3);
+
+  % Résistance 20Ω (milieu, vertical)
+  \draw (3,3) to[R, l=$20\,\Omega$] (3,0);
+
+  % Source de courant 3A (milieu-droite, vertical)
+  \draw (4.5,0) to[I, l_=$3\,{A}$] (4.5,3);
+
+  \draw (3,3) -- (5,3);
+
+  % Résistance 4Ω (haut-droite, horizontal)
+  \draw (5,3) to[R, l=$4\,\Omega$] (7,3);
+
+  % Fil sortie borne + (continuation après 4Ω)
+  \draw (7,3) to[short, -o] (7.5,3) node[right] {$b$};
+
+  % Fil sortie borne - (bas droite)
+  \draw (7,0) to[short, -o] (7.5,0) node[right] {$a$};
+
+  % Indication de tension V = 32V sur les bornes
+  %\node[right] at (7.8, 1.5) {$V = 32\,{V}$};
+
+  % Fils de la barre de masse (bas)
+  \draw (0,0) -- (7,0);
+
+\end{circuitikz}
+\end{document}
